@@ -1,0 +1,302 @@
+@import "compass/reset";
+@import "compass/css3";
+@import "responsive";
+@import "flexbox";
+@import "colors";
+@import "typography";
+
+html {font-size: 10px;}
+
+html, body {
+	height: 100vh;
+	width: 100vw;
+	margin: 0;
+	padding: 0;
+	-webkit-text-size-adjust: 100%;
+}
+
+body {
+	@extend %flexColumnNoWrap;
+	@extend %verticalFill;
+	@include box-sizing(border-box);
+	header {
+		@include box-sizing(border-box);
+		@include flex(2);
+		text-align: center;
+	}
+	nav {
+		padding-top: 2rem;
+		@include box-sizing(border-box);
+		@include flex(1);
+		@extend %flexRowNoWrap;
+		@extend %spaceAround;
+		@extend %verticalFill;
+		button {
+			@include flex(1);
+		}
+	}
+	main {
+		@include box-sizing(border-box);
+		@include flex(10);
+		@extend %flexRowNoWrap;
+		@extend %verticalFill;
+		@extend %spaceAround;
+		padding: 2rem;
+		border: 1px solid red;
+		#user-interaction {
+			display: none;
+		}
+		article {
+			@extend %flexbox;
+			@extend %flexColumn;
+			@extend %verticalFill;
+			@include flex(auto);
+			@include box-sizing(border-box);
+			margin-bottom: 1rem;
+			overflow-y: auto;
+			header {
+				@include flex(1);
+				@extend %flexbox;
+				@extend %flexRow;
+				@extend %verticalFill;
+				@extend %spaceBetween;
+				h1 {
+					text-align: right;
+					@include flex(2);
+				}
+				div {
+					@include flex(1);
+				}
+			}
+			section {
+				@extend %flexbox;
+				@extend %flexRow;
+				@extend %verticalFill;
+				@extend %spaceAround;
+				@include flex(8);
+				@include box-sizing(border-box);
+				ol {
+					flex: auto;
+				}
+				.details-container {
+					@include flex(8);
+					@extend %flexbox;
+					@extend %flexColumn;
+					@extend %verticalFill;
+					margin-right: 2rem;
+					.details-header {
+						@include flex(1);
+						@extend %flexbox;
+						@extend %flexRow;
+						@extend %verticalFill;
+						@extend %spaceBetween;
+						.details-name {
+							@include flex(2);
+							text-align: right;
+						}
+					}
+					.details-details {
+						@include flex(8);
+						overflow-y: auto;
+					}
+					.details-footer {
+						@include box-sizing(border-box);
+						@include flex(2);
+						padding: 2rem;
+						background-color: rgba(55, 55, 55, 0.5);
+					}
+				}
+				aside {
+					@include border-radius(7px);
+					@include flex(2);
+					@include box-sizing(border-box);
+					background-color: #aaa;
+					padding: 2rem;
+				}
+			}
+			footer {
+				@include flex(1);
+			}
+		}
+		.formContainer {
+			flex: auto;
+		}
+		.peopleContainer {
+			flex: auto;
+			box-sizing: border-box;
+			ul {
+				list-style: none;
+				@extend %flexColumnNoWrap;
+				@extend %verticalFill;
+				.male {
+					background-color: $mancard;
+				}
+				.female {
+					background-color: $womancard;
+				}
+				> li {
+					@include flex(1);
+					@include box-sizing(border-box);
+					border: 1px solid #333;
+					border-radius: 4px;
+					> .family {
+						@include flex(1);
+						@include box-sizing(border-box);
+						@extend %flexColumnWrap;
+						@extend %absoluteCenter;
+					}
+				}
+				.patriarch, .matriarch {
+					min-height: 5vh;
+				}
+				.personCard {
+					min-height: 150px;
+					@include flex(1);
+					@include box-sizing(border-box);
+					@extend %flexColumnNoWrap;
+					@extend %absoluteCenter;
+					.nameContainer {
+						@include box-sizing(border-box);
+						@extend %flexRowNoWrap;
+						@extend %spaceBetween;
+						@include flex(auto);
+						.name {
+							@include flex(1);
+							font-size: 2rem;
+							padding: 0.5rem;
+							margin: 0;
+						}
+					}
+					.personImage {
+						@include flex(auto);
+						min-height: 50px;
+						min-width: 50px;
+						background-position: center;
+						background-repeat: no-repeat;
+						background-size: contain;
+					}
+					.dates {
+						flex: none;
+						@extend %flexRowNoWrap;
+						@extend %verticalFill;
+						font-size: 2rem;
+						text-align: center;
+						> p {
+							@include flex(1);
+							margin: 0;
+						}
+					}
+				}
+			}
+		}
+
+		.formContainer {
+			display: none;
+			box-sizing: border-box;
+			form {
+				box-sizing: border-box;
+				ul {
+					list-style: none;
+					li {
+						label {
+							text-align: right;
+							padding-right: 1%;
+							box-sizing: border-box;
+						}
+						input {
+							text-align: left;
+							box-sizing: border-box;
+						}
+					}
+					.formButtonContainer {
+						margin-top: 20px;
+						text-align: center;
+					}
+				}
+			}
+		}
+	}
+}
+
+ol {
+	counter-reset: li; /* Initiate a counter */
+	list-style: none; /* Remove default numbering */
+	padding: 0;
+	margin-bottom: 4em;
+	text-shadow: 0 1px 0 rgba(255,255,255,.5);
+	@include box-sizing(border-box);
+	> li {
+		box-sizing: border-box;
+		padding-left: 1rem;
+		&:hover {
+			cursor: pointer;
+		}
+		> p {
+			position: relative;
+			display: block;
+			padding: .4em .4em .4em 6rem;
+			margin: 0.5em 0;
+			background: #ddd;
+			color: #444;
+			@include border-radius(.3em);
+			transition: all .3s ease-out;
+			@include box-sizing(border-box);
+			&:hover {
+				background: #aaa;
+			}
+			&:before {
+				content: counter(li);
+				counter-increment: li;
+				position: absolute;
+				left: -0.75rem;
+				top: 50%;
+				margin-top: -1.3em;
+				background: $Blue;
+				height: 2em;
+				width: 2em;
+				line-height: 2;
+				border: .3em solid #fff;
+				text-align: center;
+				font-weight: bold;
+				@include border-radius(2em);
+				transition: all .3s ease-out;
+			}
+		}
+		> ol {
+			margin: 0 0 0 2rem; /* add some left margin for inner lists */
+		}
+	}
+}
+
+.hidden {
+	display: none;
+}
+
+.buttonContainer {
+	width: 100%;
+	text-align: center;
+}
+
+button {
+	// height: 33px;
+	// width: 100px;
+	// -webkit-appearance: none;
+	// margin: 0 auto;
+	// text-align: center;
+	// font-size: 0.8em;
+	// font-weight: bold;
+}
+
+.createNewMale {
+	background-color: $mancard;
+	color: black;
+}
+
+.createNewFemale {
+	background-color: $womancard;
+	color: black;
+}
+
+.birthDate {
+	width: 100%;
+}

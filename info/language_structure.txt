@@ -1,0 +1,112 @@
+WRITTEN COMMUNICATION
+=============
+
+	PURPOSE: To gain knowledge by the interpretation of facts.
+
+	Every person is different from the other. Consequently, the way their mind apprehends and interprets facts is equally as different from the other. In this case, the more people interpreting facts, the better. For, through the minds of many, we will be able to see all possible perspectives of any given set of facts.
+
+	Quite possibly the most important aspect of communication is to understand it's purpose. The purpose of communication IS NOT to relay YOUR INTERPRETATION of the facts to another, for that is an opinion. The purpose of communication MUST and ALWAYS should be to arm another's mind with the all of the facts of any given subject or cirumstance so that they can interpret those facts themselves to formulate their own opinion.
+
+	If I have correctly stated the purpose of communication, then there are a few logical conclusions which can be safely made. An exhaustive itemization of these conclusions goes beyond the scope of my efforts here, however there is one too important to go unsaid. If the purpose of communication is to relay facts to another, then any attempt to add to (relay your own opinion as fact), or subtract from (withholding key facts) all known facts about any given thing can mean only one thing, viz: deception.
+
+	Whether intentionally or not, adding to or subtracting from the facts results in the influencing of another's interpretation and can only be regarded as deception.
+
+		EXAMPLE #1:
+			SITUATION:
+				You communicate less than all of the facts about a situation to another because you did not know all of the facts.
+
+			PROBLEM:
+				You have inadvertantly influenced their understanding of the facts, thereby deceiving them.
+				[intentionally or not, the result is the same: you have deceived and/or misled them]
+
+			SOLUTION:
+				Either ... Caveat emptor		OR 			Non loquor de quibus non cognosco
+				           Buyer beware     				Do not speak to things about which you do not fully know
+
+
+		Example #2:
+			SITUATION:
+				You communicate less than all of the facts about a situation to another person even though you were in possession of all of the facts.
+
+			PROBLEM:
+				You are knowingly influencing their understanding of the facts, thereby deceiving them. This makes you a controlling, arrogant, power-seeking, dishonest son-of-a-bitch.
+
+			SOLUTION:
+				You should either repent of your wicked ways, or hang yourself.
+
+
+	CURRENT STATUS
+	==============
+
+		PREDICATE-ORIENTED CONSTRUCT
+
+		Currently, English sentences are constructed as follows:
+
+					SENTENCE = {
+						SUBJECT: {
+							type: simple || compound || complete
+						},
+						PREDICATE: {
+							type: transitive || intransitive
+						},
+						OBJECT(S) {
+							type: direct || indirect
+						}
+					}
+
+		I would call this a predicate-oriented construct.
+
+		IMHO, not only do I think that the focus of the sentence is improperly placed, I also think that it is missing some vital information, viz: the time and location of the predicate.
+
+		My question is... why is the focus of the sentence placed on the predicate/action/verb? Why is the primary focus, meaning ... the whole reason for this idea, thing, or fact to be communicated ... placed on what was done instead of who did the doing?
+
+		After all, the first member of this triplet is called the SUBJECT, which, by it's very label, sounds passive. Why is it called that? Because, currently, the focus of this piece of information is the predicate and the SUBJECT is the item of information that is related to the focus of the overall fact being communicated. It is the one who performed the action.
+
+		Therefore, the SUBJECT is deferential to the PREDICATE. Logically following then, the OBJECT is deferential to the SUBJECT. So, to list the separate pieces of information contained in the fact being communicated hierachically, in the current communication model would look like this:
+
+			1. PREDICATE
+			2. SUBJECT
+			3. OBJECT
+
+
+		If we were to stick to the current communication model, I think it should be a WHOdunit, not a whoDUNit. Yet, even that is not exactly right. Notice in the whoDUNit model, the emphasis and focus is on the predicate. Whereas, in the WHOdunit model, the emphasis is on the actor; the one doing the doing.
+
+		Why does this matter? What is the importance of shifting the focus from the action to the actor? Before we can answer that, we have to ask ourselves the question, "What do we gain from focusing on the action?". The answer to which, of course, is that we gain knowledge that an action took place. You can see now the justification for my initial question. Why would we do that? Why would we want to know that an action took place? What do we gain from knowing that an action took place? The knowledge gleaned from that exercise is entirely unactionable; it is only a pursuit in gathering facts for the sake of having more facts.
+
+		Possessing a lot of facts is not the same as possessing knowledge.
+
+		Facts are a collection of bits of information. Knowledge is a collection of facts which provide insight into the motivations BEHIND the actions. It is only once you know the reasons WHY someone did something that you can then take action. And in order to drill down to the reasons WHY, you must place your focus on the EVENT, not the action. You can only begin to get to the WHY when you know the WHO and how they are situated, relative to all other known actors and factors.
+
+		Instead of continuing in the PREDICATE-ORIENTED CONSTRUCT, I propose a new written communication paradigm.
+
+
+
+		EVENT-ORIENTED CONSTRUCT
+			The WHOdunit model gets close to solving the problem, but it doesn't quite get all the way there. Instead of a WHOdunit, I think it should be a WHODUNITWHENWHERE, keeping in my two important things:
+
+				1. paying very careful attention to the fact that equal weight of consideration is given to each item of information
+				2. quite possibly most important is to always remember that the purpose of communication is to leave the determination of the WHY up to the recipient of the facts.
+
+			Thus, the new model of a sentence would look like this:
+
+							SENTENCE = {
+								ACTOR: {
+									type: simple || compound || complete
+								},
+								ACTION: {
+									type: transitive || intransitive
+								},
+								OBJECT(s): {
+									type: direct || indirect
+								},
+								CHRONOLOCATION: {
+									TIME: {
+										type: absolute || span (duration)
+									},
+									LOCATION: {
+										type: absolute (123 Main Street) || relative (3 miles west of Dallas)
+									}
+								}
+							}
+
+			With equal weight being given to each item of information being considered, there is no way to list them heirarchically; they are all co-equal and thus there is no heirarchy.

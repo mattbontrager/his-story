@@ -1,0 +1,106 @@
+// $xxl: > $xl;
+$xl: 1600;
+$lg: 1200;
+$med: 1080;
+// $small: < $lg;
+
+
+@mixin bp($point: '') {
+	@if $point == 1GiPad { /* iPads (portrait and landscape) */
+		@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) {
+			@content;
+		}
+	} @else if $point == 1GiPadP { /* iPads (portrait) */
+		@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: portrait) {
+			@content;
+		}
+	} @else if $point == 1GiPadL { /* iPads (landscape) */
+		@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: landscape) {
+			@content;
+		}
+	} @else if $point == 1GiPadRetina { /* Retina iPads (portrait and landscape) */
+		@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (-webkit-device-pixel-ratio: 2) {
+			@content;
+		}
+	} @else if $point == 1GiPadPR { /* Retina iPads (portrait) */
+		@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: portrait) and (-webkit-device-pixel-ratio: 2) {
+			@content;
+		}
+	} @else if $point == 1GiPadLR { /* Retina iPads (landscape) */
+		@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: landscape) and (-webkit-device-pixel-ratio: 2) {
+			@content;
+		}
+	} @else if $point == iPad {
+		@media only screen and (min-device-width: 1536px) and (max-device-width: 2048px) and (-webkit-device-pixel-ratio: 2) {
+			@content;
+		}
+	} @else if $point == i5B { /* iPhone 5 Both */
+		@media only screen and (-webkit-min-device-pixel-ratio: 2) and (max-device-height: 568px) {
+			@content;
+		}
+	} @else if $point == i5P { /* iPhone 5 Portrait */
+		@media only screen and (device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait) {
+			@content;
+		}
+	} @else if $point == i5L { /* iPhone 5 Landscape */
+		@media only screen and (device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape) {
+			@content;
+		}
+	} @else if $point == retina { /* All Retina Displays */
+		@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 2/1), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
+			@content;
+		}
+	} @else if $point == development { /* keeping sizes good with console open */
+		@media only screen and (min-width: 925px) {
+			@content;
+		}
+	} @else if $point == supersmallscreen {
+		@media only screen and (max-width: 1024px) {
+			@content;
+		}
+	} @else if $point == smallscreen { /* Smaller Laptops (i.e. 11" Air) */
+		// @media only screen and (min-width: 1025px) and (max-width: 1223px) {
+		@media only screen and (max-width: 1223px) {
+			@content;
+		}
+	} @else if $point == defaultscreen { /* Standard Screens */
+		@media only screen and (min-width: 1224px) {
+			@content;
+		}
+	} @else if $point == largescreen { /* Large Screens */
+		@media only screen and (min-width: 1920px) {
+			@content;
+		}
+	} @else if $point == largemedia { /* Large Screens (i.e. TV's, etc.) */
+		@media only screen and (min-width: 2800px) {
+			@content;
+		}
+	} @else if $point == 6P {
+		@media only screen and (max-height: 1920px) and (orientation: portrait) {
+			@content;
+		}
+	} @else if $point == 6L {
+		@media only screen and (max-width: 1080px) and (orientation: landscape) {
+			@content;
+		}
+	} @else if $point == 6Plus {
+		@media only screen and (max-device-width: 1080px) {
+			@content;
+		}
+	} @else if $point == 6PlusP {
+		 @media only screen and (max-device-width: 1080px) and (orientation: portrait) {
+		 	@content;
+		 }
+	} @else if $point == 6PlusL {
+		 @media only screen and (max-device-width: 1080px) and (orientation: landscape) {
+		 	@content;
+		 }
+	}
+}
+
+.disappearLargeMedia {
+	display: block;
+	@include bp(largemedia) {
+		display: none;
+	}
+}

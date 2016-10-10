@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en-US">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0 user-scalable=no" />
+		<meta name="author" content="@mattbontrager">
+		<link rel="stylesheet" href="css/screen.css" />
+	</head>
+	<body>
+		<header>
+			<!-- <h1>His Story Header</h1> -->
+		</header>
+		<nav>
+			<button class="createNewMale" data-method="create" data-item="male">New Man</button>
+			<button class="createNewFemale" data-method="create" data-item="female">New Woman</button>
+		</nav>
+		<main>
+			<div class="formContainer">
+				<!-- <form>
+					<ul>
+						<li>
+							<label for="first_name">First Name: </label>
+							<input type="text" name="first_name" id="first_name" data-required="true" data-title="Please provide this person's first name." placeholder="Peter" autocorrect="on" autocapitalize="none" />
+						</li>
+						<li>
+							<label for="middle_name">Middle Name: </label>
+							<input type="text" name="middle_name" id="middle_name" data-required="false" data-title="" placeholder="Matthew" autocorrect="on" autocapitalize="none" />
+						</li>
+						<li>
+							<label for="last_name">Last Name: </label>
+							<input type="text" name="last_name" id="last_name" data-required="true" placeholder="Bontrager" autocorrect="on" autocapitalize="none" />
+						</li>
+						<li>
+							<label for="birthdate">Birthdate: </label>
+							<input type="date" name="birthdate" id="birthdate" data-required="true" data-title="Please provide the date this person was born." />
+						</li>
+						<li class="formButtonContainer">
+							<button type="submit">Submit</button>
+						</li>
+					</ul>
+				</form> -->
+			</div>
+			<div class="peopleContainer">
+				<ul id="people"></ul>
+			</div>
+		</main>
+		<footer></footer>
+		<script src="js/uuid.js"></script>
+		<script src="js/min/moment.min.js"></script>
+		<script src="http://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+		<script src="js/min/jquery.loadTemplate.min.js"></script>
+		<script src="js/main.js"></script>
+	</body>
+</html>
