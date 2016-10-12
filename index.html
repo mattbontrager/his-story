@@ -11,29 +11,39 @@
 		<header>
 			<!-- <h1>His Story Header</h1> -->
 		</header>
-		<nav>
+		<nav class="app-nav">
 			<button class="createNewMale" data-method="create" data-item="male">New Man</button>
 			<button class="createNewFemale" data-method="create" data-item="female">New Woman</button>
 		</nav>
 		<main>
-			<div class="formContainer"></div>
-			<div class="peopleContainer">
-				<div id="people"></div>
-				<div id="families"></div>
+			<nav class="main-nav">
+				<button data-method="reveal" data-element="people">People</button>
+				<button data-method="reveal" data-element="families">Families</button>
+			</nav>
+			<div class="main-content">
+				<div class="formContainer"></div>
+				<div class="peopleContainer">
+					<div id="families">
+						<h4>families</h4>
+					</div>
 
-				<ul id="people">
-					<li class="familiesContainer">
-						<ul class="families"></ul>
-					</li>
-				</ul>
+					<ul id="people">
+						<li class="familiesContainer">
+							<ul class="families"></ul>
+						</li>
+					</ul>
+				</div>
 			</div>
 		</main>
-		<footer></footer>
+		<footer>
+			<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">
+				<img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc/4.0/88x31.png" />
+			</a> This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Attribution-NonCommercial 4.0 International License</a>.
+		</footer>
 		<script src="js/libs/uuid.js"></script>
 		<script src="js/libs/moment.min.js"></script>
 		<script src="js/libs/jquery.min.js"></script>
 		<script src="js/libs/jquery.loadTemplate.min.js"></script>
 		<script src="js/main.js"></script>
-		<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Attribution-NonCommercial 4.0 International License</a>.
 	</body>
 </html>

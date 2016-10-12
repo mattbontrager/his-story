@@ -1,5 +1,6 @@
 @import "compass/reset";
 @import "compass/css3";
+@import "compass/typography/lists/bullets";
 @import "responsive";
 @import "flexbox";
 @import "colors";
@@ -38,183 +39,214 @@ body {
 	main {
 		@include box-sizing(border-box);
 		@include flex(10);
-		@extend %flexRowNoWrap;
+		@extend %flexColumnNoWrap;
 		@extend %verticalFill;
-		@extend %spaceAround;
-		padding: 2rem;
-		border: 1px solid red;
-		#user-interaction {
-			display: none;
-		}
-		article {
-			@extend %flexbox;
-			@extend %flexColumn;
-			@extend %verticalFill;
-			@include flex(auto);
-			@include box-sizing(border-box);
-			margin-bottom: 1rem;
-			overflow-y: auto;
-			header {
-				@include flex(1);
-				@extend %flexbox;
-				@extend %flexRow;
-				@extend %verticalFill;
-				@extend %spaceBetween;
-				h1 {
-					text-align: right;
-					@include flex(2);
-				}
-				div {
-					@include flex(1);
-				}
-			}
-			section {
-				@extend %flexbox;
-				@extend %flexRow;
-				@extend %verticalFill;
-				@extend %spaceAround;
-				@include flex(8);
-				@include box-sizing(border-box);
-				ol {
-					flex: auto;
-				}
-				.details-container {
-					@include flex(8);
-					@extend %flexbox;
-					@extend %flexColumn;
-					@extend %verticalFill;
-					margin-right: 2rem;
-					.details-header {
-						@include flex(1);
-						@extend %flexbox;
-						@extend %flexRow;
-						@extend %verticalFill;
-						@extend %spaceBetween;
-						.details-name {
-							@include flex(2);
-							text-align: right;
-						}
-					}
-					.details-details {
-						@include flex(8);
-						overflow-y: auto;
-					}
-					.details-footer {
-						@include box-sizing(border-box);
-						@include flex(2);
-						padding: 2rem;
-						background-color: rgba(55, 55, 55, 0.5);
-					}
-				}
-				aside {
-					@include border-radius(7px);
-					@include flex(2);
-					@include box-sizing(border-box);
-					background-color: #aaa;
-					padding: 2rem;
-				}
-			}
-			footer {
-				@include flex(1);
-			}
-		}
-		.formContainer {
-			flex: auto;
-		}
-		.peopleContainer {
-			flex: auto;
-			box-sizing: border-box;
-			ul {
-				list-style: none;
-				@extend %flexColumnNoWrap;
-				@extend %verticalFill;
-				.male {
-					background-color: $mancard;
-				}
-				.female {
-					background-color: $womancard;
-				}
-				> li {
-					@include flex(1);
-					@include box-sizing(border-box);
-					border: 1px solid #333;
-					border-radius: 4px;
-					> .family {
-						@include flex(1);
-						@include box-sizing(border-box);
-						@extend %flexColumnWrap;
-						@extend %absoluteCenter;
-					}
-				}
-				.patriarch, .matriarch {
-					min-height: 5vh;
-				}
-				.personCard {
-					min-height: 150px;
-					@include flex(1);
-					@include box-sizing(border-box);
-					@extend %flexColumnNoWrap;
-					@extend %absoluteCenter;
-					.nameContainer {
-						@include box-sizing(border-box);
-						@extend %flexRowNoWrap;
-						@extend %spaceBetween;
-						@include flex(auto);
-						.name {
-							@include flex(1);
-							font-size: 2rem;
-							padding: 0.5rem;
-							margin: 0;
-						}
-					}
-					.personImage {
-						@include flex(auto);
-						min-height: 50px;
-						min-width: 50px;
-						background-position: center;
-						background-repeat: no-repeat;
-						background-size: contain;
-					}
-					.dates {
-						flex: none;
-						@extend %flexRowNoWrap;
-						@extend %verticalFill;
-						font-size: 2rem;
-						text-align: center;
-						> p {
-							@include flex(1);
-							margin: 0;
-						}
-					}
-				}
-			}
+
+		.main-nav {
+			@include flex(1);
 		}
 
-		.formContainer {
-			display: none;
-			box-sizing: border-box;
-			form {
-				box-sizing: border-box;
-				ul {
-					list-style: none;
-					li {
-						label {
-							text-align: right;
-							padding-right: 1%;
-							box-sizing: border-box;
+		.main-content {
+			@include flex(8);
+			@extend %flexRowNoWrap;
+			@extend %verticalFill;
+			@extend %spaceAround;
+			padding: 2rem;
+			border: 1px solid red;
+			#user-interaction {
+				display: none;
+			}
+			article {
+				@extend %flexbox;
+				@extend %flexColumn;
+				@extend %verticalFill;
+				@include flex(auto);
+				@include box-sizing(border-box);
+				margin-bottom: 1rem;
+				overflow-y: auto;
+				header {
+					@include flex(1);
+					@extend %flexbox;
+					@extend %flexRow;
+					@extend %verticalFill;
+					@extend %spaceBetween;
+					h1 {
+						text-align: right;
+						@include flex(2);
+					}
+					div {
+						@include flex(1);
+					}
+				}
+				section {
+					@extend %flexbox;
+					@extend %flexRow;
+					@extend %verticalFill;
+					@extend %spaceAround;
+					@include flex(8);
+					@include box-sizing(border-box);
+					ol {
+						flex: auto;
+					}
+					.details-container {
+						@include flex(8);
+						@extend %flexbox;
+						@extend %flexColumn;
+						@extend %verticalFill;
+						margin-right: 2rem;
+						.details-header {
+							@include flex(1);
+							@extend %flexbox;
+							@extend %flexRow;
+							@extend %verticalFill;
+							@extend %spaceBetween;
+							.details-name {
+								@include flex(2);
+								text-align: right;
+							}
 						}
-						input {
-							text-align: left;
-							box-sizing: border-box;
+						.details-details {
+							@include flex(8);
+							overflow-y: auto;
+						}
+						.details-footer {
+							@include box-sizing(border-box);
+							@include flex(2);
+							padding: 2rem;
+							background-color: rgba(55, 55, 55, 0.5);
 						}
 					}
-					.formButtonContainer {
-						margin-top: 20px;
-						text-align: center;
+					aside {
+						@include border-radius(7px);
+						@include flex(2);
+						@include box-sizing(border-box);
+						background-color: #aaa;
+						padding: 2rem;
+					}
+				}
+				footer {
+					@include flex(1);
+					text-align: center;
+				}
+			}
+			.formContainer {
+				flex: auto;
+			}
+			.peopleContainer {
+				flex: auto;
+				box-sizing: border-box;
+				ul {
+					@include no-bullet;
+					@extend %flexRowWrap;
+					@extend %spaceAround;
+					.male {
+						// background-color: $mancard;
+					}
+					.female {
+						// background-color: $womancard;
+					}
+					> li {
+						@include flex(1);
+						@include box-sizing(border-box);
+						border: 1px solid #333;
+						border-radius: 4px;
+						> .family {
+							@include flex(1);
+							@include box-sizing(border-box);
+							@extend %flexColumnWrap;
+							@extend %absoluteCenter;
+						}
+					}
+					.patriarch, .matriarch {
+						min-height: 5vh;
+					}
+					.personCard {
+						min-height: 150px;
+						max-width: 20vw;
+						min-width: 20vw;
+						@include flex(1);
+						@include box-sizing(border-box);
+						@extend %flexColumnNoWrap;
+						@extend %absoluteCenter;
+						.nameContainer {
+							@include box-sizing(border-box);
+							@extend %flexRowWrap;
+							@extend %spaceAround;
+							@include flex(auto);
+							.name {
+								@include flex(1);
+								font-size: 2rem;
+								padding: 0.5rem;
+								margin: 0;
+							}
+						}
+						figure {
+							@include flex(auto);
+							@extend %flexColumnWrap;
+							@include alignItems(center);
+						}
+						figcaption {
+							@include flex(auto);
+						}
+						.personImage {
+							@include flex(auto);
+							min-height: 5rem;
+							max-height: 5rem;
+							min-width: 5rem;
+							max-width: 5rem;
+							height: 50px;
+							width: 50px;
+							background-position: center;
+							background-repeat: no-repeat;
+							background-size: contain;
+						}
+						.dates {
+							@include flex(auto);
+							@extend %flexRowNoWrap;
+							@extend %verticalFill;
+							font-size: 2rem;
+							text-align: center;
+							> p {
+								@include flex(1);
+								margin: 0;
+							}
+						}
+					}
+				}
+			}
+
+			.formContainer {
+				display: none;
+				box-sizing: border-box;
+				form {
+					box-sizing: border-box;
+					ul {
+						list-style: none;
+						li {
+							label {
+								text-align: right;
+								padding-right: 1%;
+								box-sizing: border-box;
+							}
+							input {
+								text-align: left;
+								box-sizing: border-box;
+							}
+						}
+						.formButtonContainer {
+							margin-top: 20px;
+							text-align: center;
+						}
 					}
 				}
 			}
 		}
+	}
+
+	footer {
+		@include flex(1);
+		@extend %flexRowNoWrap;
+		@extend %absoluteCenter;
 	}
 }
 
@@ -268,32 +300,28 @@ ol {
 	}
 }
 
-.hidden {
-	display: none;
-}
-
 .buttonContainer {
 	width: 100%;
 	text-align: center;
 }
 
 button {
-	// height: 33px;
-	// width: 100px;
-	// -webkit-appearance: none;
-	// margin: 0 auto;
-	// text-align: center;
-	// font-size: 0.8em;
-	// font-weight: bold;
+	height: 3.3rem;
+	max-width: 15rem;
+	-webkit-appearance: none;
+	margin: 0 auto;
+	text-align: center;
+	font-size: 1.5rem;
+	font-weight: bold;
 }
 
 .createNewMale {
-	background-color: $mancard;
+	// background-color: $mancard;
 	color: black;
 }
 
 .createNewFemale {
-	background-color: $womancard;
+	// background-color: $womancard;
 	color: black;
 }
 

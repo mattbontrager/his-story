@@ -210,7 +210,7 @@ var development = true,
 	};
 
 $(function() {
-	var $sex = $('form').find('#sex'),
+	var $sex = $('form').find('#new-person-sex'),
 		$people = $('#people'),
 		$families = $('.families'),
 		drags = $people.find('.male'),
@@ -246,6 +246,7 @@ $(function() {
 					data = {
 						elemID: person.id,
 						theClass: 'personCard ' + theImage,
+						isDraggable: draggable,
 						firstName: person.name.first,
 						middleName: person.name.middle,
 						lastName: person.name.last.given,
@@ -273,6 +274,7 @@ $(function() {
 				});
 			},
 			appendPerson = function appendPerson(the_person) {
+				!!development && console.log('the_person: ', the_person);
 				addPersonToDom(the_person);
 				addPersonToStorage(the_person);
 			},
@@ -400,7 +402,7 @@ $(function() {
 					e.stopPropagation();
 
 					var $form = $(e.target),
-						$sex = $form.find('#sex'),
+						$sex = $form.find('#new-person-sex'),
 						clearForm = function clearForm() {
 							$('.formContainer').fadeOut().css('background-color', 'inherit').empty();
 						};
@@ -416,6 +418,8 @@ $(function() {
 					newPerson.birth.date = moment($('#birthdate').val(), "YYYY-MM-DD"); // need to reformat?
 					newPerson.sex = $sex.val();
 
+					!!development && console.log('newPerson: ', newPerson);
+
 					People.push(newPerson);
 
 					appendPerson(newPerson);
@@ -430,9 +434,10 @@ $(function() {
 					createItem = function createItem(item) {
 						!!development && console.log('in createItem', item);
 						var $fc = $('.formContainer'),
-							fcBGC = (item === "male") ? "blue": "pink";
+							// fcBGC = (item === "male") ? "blue": "pink";
+							fcBGC = (item === "male") ? "white": "white";
 
-						if (item === "male" || "female") {
+						if (item === ("male" || "female")) {
 							newPerson = new Person;
 						}
 
@@ -449,6 +454,14 @@ $(function() {
 					},
 					clearForm = function clearForm() {
 						$('.formContainer').fadeOut().css('background-color', 'inherit').empty();
+					},
+					revealElement = function revealElement(elem) {
+						!!development && console.log('elem: ', elem);
+						var $element = $('#' + elem),
+							$sib = $element.siblings();
+
+						$sib.hide();
+						$element.fadeIn();
 					};
 
 				$navButton.off('click').on('click', function(e) {
@@ -456,12 +469,16 @@ $(function() {
 					e.stopPropagation();
 					var $me = $(e.target),
 						method = $me.data('method'),
-						item = $me.data('item');
-
-					!!development && console.log('item: ', item);
+						element,
+						item;
 
 					if (method === 'create') {
+						item = $me.data('item');
+						!!development && console.log('item: ', item);
 						createItem(item);
+					} else if (method === 'reveal') {
+						element = $me.data('element');
+						revealElement(element);
 					}
 				});
 
@@ -566,7 +583,7 @@ $(function() {
 					e.stopPropagation();
 
 					var $form = $(e.target),
-						$sex = $form.find('#sex');
+						$sex = $form.find('#new-person-sex');
 
 					if (!newPerson) {
 						alert('no person');
@@ -589,6 +606,7 @@ $(function() {
 
 		return {
 			init: function() {
+				$('#people').hide();
 				$.when(getAllPeople()).then(function getAllPeopleSuccess() {
 					!!development && console.log('in getAllPeopleSuccess');
 					bindings();
