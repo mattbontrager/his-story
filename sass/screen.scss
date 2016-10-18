@@ -22,7 +22,7 @@ body {
 	@include box-sizing(border-box);
 	header {
 		@include box-sizing(border-box);
-		@include flex(2);
+		@include flex(0);
 		text-align: center;
 	}
 	nav {

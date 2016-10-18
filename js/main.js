@@ -34,7 +34,7 @@ var development = true,
 	 * The WindowBase64.btoa() method creates a base-64 encoded ASCII string
 	 * from a String object in which each character in the string is treated
 	 * as a byte of binary data.
-	 * 
+	 *
 	 * @date   2016-10-07
 	 * @author mattbontrager
 	 * @param  {String}   str the string to encode
@@ -49,7 +49,7 @@ var development = true,
 	/**
 	 * The WindowBase64.atob() function decodes a string of data which has been
 	 * encoded using base-64 encoding.
-	 * 
+	 *
 	 * @date   2016-10-07
 	 * @author mattbontrager
 	 * @param  {String}   str the string to decode
@@ -75,7 +75,7 @@ var development = true,
 		}
 		var fcn = getRandomNumber(),
 			split = Fy.split('-');
-		
+
 		split[0] = getRandomNumber();
 		return split.join('-');
 	},
@@ -85,7 +85,7 @@ var development = true,
 		}
 		var mcn = getRandomNumber(),
 			split = Mx.split('-');
-		
+
 		split[0] = getRandomNumber();
 		return split.join('-');
 	},
@@ -132,7 +132,7 @@ var development = true,
 
 		chromotids.push({x: xa});
 		chromotids.push({x: xb});
-		
+
 		return {gonosome: chromotids};
 	},
 	gonosome = function gonosome(sex) {
@@ -150,17 +150,19 @@ var development = true,
 		return {gonosome: chromotids};
 	},
 	checkObjectLength = function checkObjectLength(obj) {
-		var key = 0;
+		const has = Object.prototype.hasOwnProperty;
+		let key = 0;
+
 		if (typeof obj !== "object") {
 			return key;
-		} else {
-			for (var i in obj) {
-				if (obj.hasOwnProperty(i)) {
-					key++;
-				}
-			}
-			return key;
 		}
+
+		for (var i in obj) {
+			if (has.call(obj, i)) {
+				key++;
+			}
+		}
+		return key;
 	},
 	People = [],
 	Person = function Person() {
@@ -218,6 +220,8 @@ $(function() {
 
 	var App = (function App() {
 		var newPerson,
+			father,
+			mother,
 			getAllPeople = function getAllPeople() {
 				!!development && console.log('in getAllPeople');
 				return $.Deferred(function deferredGetAllPeople(dgap) {
@@ -239,13 +243,15 @@ $(function() {
 				if (!arguments.length) {
 					throw new Error('no person passed to addPersonToDom');
 				}
-				var theImage = (person.sex === 'm') ? 'male': 'female',
-					draggable = (person.sex === 'm') ? "true": "false",
+				var isMale = (person.sex === 'm') ? true: false,
+					theImage = (isMale) ? 'male': 'female',
+					draggable = (isMale) ? "true": "false",
+					classToAssign = 'personCard ' + theImage,
 					bdate = moment(person.birth.date),
 					bday = bdate.format("MMM Do, YYYY"),
 					data = {
 						elemID: person.id,
-						theClass: 'personCard ' + theImage,
+						theClass: classToAssign,
 						isDraggable: draggable,
 						firstName: person.name.first,
 						middleName: person.name.middle,
@@ -298,9 +304,101 @@ $(function() {
 					}).promise();
 				}
 			},
-			prepFormElements = function prepFormElements(mommy, daddy) {
+			newFamilyTemplateLoaded = function newFamilyTemplateLoaded(father, mother, child) {
+				addParents(father, mother);
+				addChild(child);
+			},
+			setMothersMarriedName = function setMothersMarriedName(motherID, newLastName) {
+				!!development && console.log('in setMothersMarriedName', newLastName);
+				var $motherElement = $('#' + motherID),
+					$mothersNameContainer = $motherElement.find('.nameContainer'),
+					$mothersLastNameElem = $mothersNameContainer.find('.lastName');
+					$mothersLastNameElem.text(familyLastName);
+			},
+			startFamily = function newFamily() {
+				var familyLastName = father.name.last.given,
+					$fatherElement = $('#' + father.id),
+					familyID = uuid.v4();
+
+				setMothersMarriedName(mother.id, familyLastName);
+
+				mother.name.last.married = familyLastName;
+				father.relationships.family.id = familyID;
+				mother.relationships.family.id = familyID;
+
+				var familyData = {
+					familyID: father.relationships.family.id,
+					familyLastName: father.name.last.given,
+					fatherInfo: father,
+					motherInfo: mother,
+					childInfo: createChild(father, mother)
+				};
+
+				!!development && console.log('familyData: ', familyData);
+				return;
+
+				$families.loadTemplate('tpl/new-family.html', familyData, {
+					append: true,
+					success: newFamilyTemplateLoaded(father, mother, child),
+					error: function(err) {
+						throw new Error(err);
+					}
+				});
+			},
+			growFamily = function growFamily(familyID, child) {
+				// body...
+			},
+			getFather = function getFather(dadid) {
+				!!development && console.log('in getFather', dadid);
+				return $.Deferred(function(gddfd) {
+					$.when(getPerson(dadid)).then(function(dad) {
+						if (dad) {
+							father = dad;
+							gddfd.resolve();
+						} else {
+							!!development && console.error('could not find father');
+							gddfd.reject();
+						}
+					});
+				}).promise();
+			},
+			getMother = function getMother(momid) {
+				!!development && console.log('in getMother', momid);
+				return $.Deferred(function(gmdfd) {
+					$.when(getPerson(momid)).then(function(mom) {
+						if (mom) {
+							mother = mom;
+							gmdfd.resolve();
+						} else {
+							!!development && console.error('could not find mother');
+							gmdfd.reject();
+						}
+					});
+				}).promise();
+			},
+			/* * /
+			areTheyMarried = function areTheyMarried(father, mother) {
+				!!development && console.log('in areTheyMarried');
+				var momFamilyID = (mother.relationships.family.id) ? mother.relationships.family.id: '',
+					dadFamilyID = (father.relationships.family.id) ? father.relationships.family.id: '',
+					newChild = createChild(father, mother);
+
+				if ((momFamilyID) && (dadFamilyID) && (momFamilyID === dadFamilyID)) {
+					!!development && console.log('they are married');
+					growFamily(dadFamilyID, newChild);
+				} else {
+					!!development && console.log('the are not yet married');
+					var newFamilyID = uuid.v4();
+					father.relationships.family.id = newFamilyID;
+					mother.relationships.family.id = newFamilyID;
+					newChild.relationships.family.id = newFamilyID;
+					startFamily(father, mother, newChild);
+				}
+			},
+			/* */
+			prepFormElements = function prepFormElements(father) {
 				$('.formContainer').loadTemplate('tpl/add-person-form.html', {
-					newLastName: daddy.name.last.given,
+					newLastName: father.name.last.given,
 					isDisabled: true
 				}, {
 					success: formBinding
@@ -313,38 +411,17 @@ $(function() {
 			},
 			addParents = function addParents(father, mother) {
 				var $parentsList = $('#' + father.relationships.family.id).find('.parents');
-			
+
 				$('#' + father.id).appendTo($parentsList);
 				$('#' + mother.id).appendTo($parentsList);
 			},
-			createChild = function createChild(mommy, daddy) {
+			createChild = function createChild(father, mother) {
 				!!development && console.log('in createChild');
 				var newPerson = new Person;
-				newPerson.relationships.family.parents.push({father: daddy.id});
-				newPerson.relationships.family.parents.push({mother: mommy.id});
-				newPerson.relationships.family.id = daddy.relationships.family.id;
+				newPerson.relationships.family.parents.push({father: father.id});
+				newPerson.relationships.family.parents.push({mother: mother.id});
+				newPerson.relationships.family.id = father.relationships.family.id;
 				return newPerson;
-			},
-			newFamilyTemplateLoaded = function newFamilyTemplateLoaded(father, mother, child) {
-				addParents(father, mother);
-				addChild(child);
-			}
-			startFamily = function newFamily(father, mother, child) {
-				var familyData = {
-					familyID: father.relationships.family.id,
-					familyLastName: father.name.last.given
-				};
-
-				$families.loadTemplate('tpl/new-family.html', familyData, {
-					append: true,
-					success: newFamilyTemplateLoaded(father, mother, child),
-					error: function(err) {
-						throw new Error(err);
-					}
-				});
-			},
-			growFamily = function growFamily(familyID, child) {
-				// body...
 			},
 			addFamilyList = function addFamilyList(father) {
 				return $.Deferred(function(afdfd) {
@@ -374,26 +451,67 @@ $(function() {
 
 				$father.addClass('parentOfChild');
 				$mother.addClass('parentOfChild');
-
-
 			},
-			makeThemAFamily = function makeThemAFamily(father, mother) {
-				!!development && console.log('in makeThemAFamily');
-				var familyLastName = father.name.last.given,
-					$motherElement = $('#' + mother.id),
-					$fatherElement = $('#' + father.id),
-					$mothersNameContainer = $motherElement.find('.nameContainer'),
-					$mothersLastNameElem = $mothersNameContainer.find('.lastName'),
-					familyID = uuid.v4();
+			getParents = function getParents(fatherID, motherID) {
+				!!development && console.log('in getParents');
+				return $.Deferred(function(gpdfd) {
+					var parents = {};
+					$.when(getFather(fatherID)).then(function() {
+						parents.father = father;
+						$.when(getMother(motherID)).then(function() {
+							parents.mother = mother;
+							gpdfd.resolve(parents);
+						});
+					});
+				}).promise();
+			},
+			areTheyMarried = function areTheyMarried(fatherID, motherID) {
+				!!development && console.log('in areTheyMarried');
+				!!development && console.log('fatherID: ', fatherID);
+				!!development && console.log('motherID: ', motherID);
+				if (arguments.length !== 2) {
+					!!development && console.error('fatherID || motherID missing from areTheyMarried');
+					return;
+				}
+				return $.Deferred(function(atmdfd) {
+					$.when(getParents(fatherID, motherID)).then(function(parents) {
+						if ((parents.father.relationships.family.id) && (parents.mother.relationships.family.id) && (parents.father.relationships.family.id === parents.mother.relationships.family.id)) {
+							atmdfd.resolve(true);
+						} else {
+							var spouse,
+								wives = parents.father.relationships.spouses;
 
+							$.each(wives, function(i, wife) {
+								if (wife.id === motherID) {
+									spouse = wife;
+								}
+							});
 
-				$mothersLastNameElem.text(familyLastName);
+							if (spouse) {
+								atmdfd.resolve(true);
+							} else {
+								atmdfd.resolve(false);
+							}
+						}
+					});
+				}).promise();
+			},
+			handleIntercourse = function handleIntercourse(fatherID, motherID) {
+				!!development && console.log('in handleIntercourse');
+				if (arguments.length !== 2) {
+					!!development && console.error('fatherID || motherID missing in handleIntercourse');
+					return;
+				}
+				$.when(areTheyMarried(fatherID, motherID)).done(function(married) {
+					if (married === true) {
+						!!development && console.log('they are married');
+						growFamily();
+					} else {
+						!!development && console.log('they are not married. starting family');
+						startFamily();
+					}
+				});
 
-				mother.name.last.married = familyLastName;
-				father.relationships.family.id = familyID;
-				mother.relationships.family.id = familyID;
-
-				addFamily(father, mother);
 			},
 			formBinding = function formBinding() {
 				$('form').off('submit').on('submit', function(e) {
@@ -483,7 +601,7 @@ $(function() {
 				});
 
 				$people.off('dragstart', '.male').on('dragstart', '.male', function(e) {
-					e.originalEvent.dataTransfer.setData('daddy', $(e.target).attr('id'));
+					e.originalEvent.dataTransfer.setData('daddy', $(e.target).data('id'));
 				});
 
 				$people.off('dragover', '.female').on('dragover', '.female', function(e) {
@@ -503,72 +621,28 @@ $(function() {
 					 * change her last name to the father's last name
 					 * also update maiden, given, etc.
 					 */
-					
+
 					/**
 					 * TODO: wrap them both in a li>ul.family container
 					 */
-					
-					
+
+
 					/**
 					 * TODO: also add "parents" class to the two who just
 					 * made the child. that way they can be together on the page
 					 * with the child(ren) listed underneath them.
 					 */
-					
-					
+
+
 					e.preventDefault();
-					var $mommy = $(this),
-						mommy_id = $mommy.attr('id'),
-						daddy_id = e.originalEvent.dataTransfer.getData('daddy'),
-						daddy,
-						mommy,
-						theyAreMarried;
+					var $mother = $(this),
+						mother_id = $mother.data('id'),
+						father_id = e.originalEvent.dataTransfer.getData('daddy');
 
-					function getDad(dadid) {
-						return $.Deferred(function(gddfd) {
-							$.when(getPerson(dadid)).then(function(dad) {
-								daddy = dad;
-								gddfd.resolve();
-							});
-						}).promise();
-						
-					}
+					!!development && console.log('father_id: ', father_id);
+					!!development && console.log('mother_id: ', mother_id);
 
-					function getMom(momid) {
-						return $.Deferred(function(gmdfd) {
-							$.when(getPerson(momid)).then(function(mom) {
-								mommy = mom;
-								gmdfd.resolve();
-							});
-						}).promise();
-					}
-
-					function areTheyMarried() {
-						var momFamilyID = (mommy.relationships.family.id) ? mommy.relationships.family.id: '',
-							dadFamilyID = (daddy.relationships.family.id) ? daddy.relationships.family.id: '',
-							newChild = createChild(mommy, daddy);
-
-						if ((momFamilyID) && (dadFamilyID) && (momFamilyID === dadFamilyID)) {
-							!!development && console.log('they are married');
-							growFamily(daddy, mommy, newChild);
-						} else {
-							!!development && console.log('the are not yet married');
-							var newFamilyID = uuid.v4();
-							daddy.relationships.family.id = newFamilyID;
-							mommy.relationships.family.id = newFamilyID;
-							newChild.relationships.family.id = newFamilyID;
-							startFamily(daddy, mommy, newChild);
-						}
-					}
-
-
-
-					$.when(getDad(daddy_id)).then(function() {
-						$.when(getMom(mommy_id)).then(areTheyMarried());
-					});
-
-					
-					
+					handleIntercourse(father_id, mother_id);
 
 					if ($('.formContainer').is(':hidden')) {
 						$('.formContainer').fadeIn().promise().done(function() {

@@ -1,6 +1,28 @@
-<div class="family" data-id="familyID" data-last-name="familyLastName" data-family-id="familyID">
+<ul class="family" data-template-bind='[
+	{
+		"attribute": "data-family-id",
+		"value": "familyID"
+	}, {
+		"attribute": "id",
+		"value": "familyID"
+	}, {
+		"attribute": "data-last-name",
+		"value": "familyLastName"
+	}
+]'>
+	<li class="parentsList">
+		<ul class="parents"></ul>
+	</li>
+	<li class="childrenList">
+		<ul class="children">
+			<li class="child" data-child-age="childAge" data-family-id="familyID"></li>
+		</ul>
+	</li>
+</ul>
+
+<!-- <div class="family" data-id="familyID" data-last-name="familyLastName" data-family-id="familyID">
 	<ul class="parents" data-family-id="familyID"></ul>
 	<ul class="children">
 		<li class="child" data-child-age="childAge" data-family-id="familyID"></li>
 	</ul>
-</div>
+</div> -->
