@@ -1,3 +1,19 @@
+var checkObjectLength = function checkObjectLength(obj) {
+	const has = Object.prototype.hasOwnProperty;
+	let key = 0;
+
+	if (typeof obj !== "object") {
+		return key;
+	}
+
+	for (var i in obj) {
+		if (has.call(obj, i)) {
+			key++;
+		}
+	}
+	return key;
+};
+
 var Person = function() {
 	this.id = uuid.v4();
 
@@ -67,16 +83,11 @@ var Person = function() {
 		handed: '' // left, right, or ambidexterous
 	};
 
-	this.color = '';
-	this.hair = '';
-	this.eyes = '';
-	this.handed = '';
-
 	/**
 	 * make this a prototypal method
 	 * @type {Boolean}
 	 */
-	this.living = true;
+	//this.living = true;
 };
 
 
@@ -86,6 +97,10 @@ Person.prototype.sayMyName = function() {
 
 Person.prototype.howTall = function() {
 	return parseInt(this.height.feet, 10) + "' " + parseInt(this.height.inches, 10) + "\"";
+};
+
+Person.prototype.spouse = function() {
+	return (checkObjectLength(this.relationships.family.spouse) > 0) ? this.relationships.family.spouse: false;
 };
 
 Person.prototype.siblings = function() {
@@ -271,7 +286,7 @@ Person.prototype.grandparents = function() {
 	}
 };
 
-Person.prototype.getChildren = function() {
+Person.prototype.children = function() {
 	var self = this,
 		myChildren = [];
 
@@ -288,13 +303,14 @@ Person.prototype.getChildren = function() {
 	}
 };
 
-var Woman = (function() {
+var Woman = function() {
 		var w = new Person;
 		w.sex = 'f';
 		return w;
-	}),
-	Man = (function() {
-		var m = new Person;
-		m.sex = 'm';
-		return m;
-	});
+};
+
+var Man = function() {
+	var m = new Person;
+	m.sex = 'm';
+	return m;
+};
