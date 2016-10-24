@@ -1,3 +1,47 @@
+insertControlNumber = function insertControlNumber(cn, x) {
+	if (arguments.length !== 2) {
+		throw new Error('control number of chromotide not passed to insertControlNumber');
+	}
+	var split = x.split('-');
+	split[0] = cn;
+	return split.join('-');
+},
+setFatherControlNumber = function setFatherControlNumber(Fy) {
+	if (arguments.length !== 1) {
+		throw new Error('Fy not sent to setFatherControlNumber');
+	}
+	var fcn = getRandomNumber(),
+		split = Fy.split('-');
+
+	split[0] = getRandomNumber();
+	return split.join('-');
+},
+setMotherControlNumber = function setMotherControlNumber(Mx) {
+	if (arguments.length !== 1) {
+		throw new Error('Mx not sent to setMotherControlNumber');
+	}
+	var mcn = getRandomNumber(),
+		split = Mx.split('-');
+
+	split[0] = getRandomNumber();
+	return split.join('-');
+},
+getFatherControlNumber = function getFatherControlNumber(Fy) {
+	if (arguments.length !== 1) {
+		throw new Error('fathers y chromosome not sent to fatherControlNumber');
+	}
+	var split = Fy.split['-'];
+
+	return parseInt(split[0], 10);
+},
+getMotherControlNumber = function getMotherControlNumber(Mx) {
+	if (arguments.length !== 1) {
+		throw new Error('mothers x chromosome not sent to motherControlNumber');
+	}
+	var split = Mx.split['-'];
+
+
+
 var consoleMsg = (pI) ? 'in Person with: ' + pI: 'in Person',
 	theRetObj = {};
 !!development && console.log(consoleMsg);
@@ -91,7 +135,7 @@ var personToStore = {person: the_person},
 	draggable = (the_person.sex === 'm') ? "true": "false",
 	bdate = the_person.birth.date,
 	bday = bdate.format("MMM Do, YYYY"),
-	age = bdate.toNow(true),					
+	age = bdate.toNow(true),
 	theLI = '<li id="' + the_person.id + '" class="personCard ' + theImage + '" draggable="' + draggable + '"><div class="personImage" style="background-image: url(images/' + theImage + '.png);"></div><div class="nameContainer"><div class="firstName name">' + the_person.name.first + '</div><div class="middleName name">' + the_person.name.middle + '</div><div class="lastName name">' + the_person.name.last.given + '</div></div><div class="birthDate"><span style="font-weight: bold;">Age: </span>' + age + '</div></li>';
 
 $('#people').append(theLI);

@@ -1,24 +1,57 @@
-<form>
-	<input id="new-person-sex" type="hidden" name="sex" data-value="newPersonSex">
-	<ul>
-		<li>
-			<label for="first_name">First Name: </label>
-			<input type="text" name="first_name" id="first_name" data-required="true" data-title="Please provide this person's first name." placeholder="Peter" autocorrect="on" autocapitalize="none" />
-		</li>
-		<li>
-			<label for="middle_name">Middle Name: </label>
-			<input type="text" name="middle_name" id="middle_name" data-required="false" data-title="" placeholder="Matthew" autocorrect="on" autocapitalize="none" />
-		</li>
-		<li>
-			<label for="last_name">Last Name: </label>
-			<input type="text" name="last_name" id="last_name" data-required="true" placeholder="Bontrager" autocorrect="on" autocapitalize="none" />
-		</li>
-		<li>
-			<label for="birthdate">Birthdate: </label>
-			<input type="date" name="birthdate" id="birthdate" data-required="true" data-title="Please provide the date this person was born." />
-		</li>
-		<li class="formButtonContainer">
-			<button type="submit">Submit</button>
-		</li>
-	</ul>
+<form id="add-person">
+	<input id="new-person-sex" type="hidden" name="sex" data-value="newPersonSex" />
+	<fieldset>
+		<legend>Name</legend>
+		<ul>
+			<li>
+				<label for="first_name">First Name: </label>
+				<input type="text" name="first_name" id="first_name" data-required="true" data-title="Please provide this person's first name." placeholder="Pat" autocorrect="on" autocapitalize="none" />
+			</li>
+			<li>
+				<label for="middle_name">Middle Name: </label>
+				<input type="text" name="middle_name" id="middle_name" data-required="false" data-title="" placeholder="Jo" autocorrect="on" autocapitalize="none" />
+			</li>
+			<li>
+				<label for="last_name">Last Name: </label>
+				<input type="text" name="last_name" id="last_name" data-required="true" placeholder="Smith" autocorrect="on" autocapitalize="none" />
+			</li>
+		</ul>
+	</fieldset>
+	<fieldset>
+		<legend>Date(s) &amp; Time(s)</legend>
+		<ul>
+			<li>
+				<label for="living_or_dead">Is this person still alive? </label>
+				<select name="living_or_dead" id="living_or_dead" data-required="true">
+					<option value="">Choose One</option>
+					<option value="yes">Yes</option>
+					<option value="no">No</option>
+				</select>
+			</li>
+			<li>
+				<label for="birthdate">Birth Date: </label>
+				<input type="date" name="birthdate" id="birthdate" data-required="true" data-title="Please provide the date this person was born." />
+			</li>
+			<li>
+				<label for="birthtime">Birth Time: </label>
+				<input type="time" name="birthtime" id="birthtime" data-required="false" />
+			</li>
+			<li class="hidden show-death-date-and-time">
+				<label for="deathdate">Death Date: </label>
+				<input type="date" name="deathdate" id="deathdate" data-required="true" data-title="Please provide the date this person died." />
+			</li>
+			<li class="hidden show-death-date-and-time">
+				<label for="deathtime">Death Time: </label>
+				<input type="time" name="deathtime" id="deathtime" data-required="false" />
+			</li>
+		</ul>
+	</fieldset>
+	<fieldset>
+		<ul>
+			<li class="formButtonContainer">
+				<button type="reset" id="reset-form" data-form="add-person">Reset</button>
+				<button type="submit" id="submit-form" data-form="add-person">Submit</button>
+			</li>
+		</ul>
+	</fieldset>
 </form>

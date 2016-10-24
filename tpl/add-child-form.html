@@ -1,30 +1,52 @@
-<form>
-	<ul>
+<form id="add-child">
+	<input type="hidden" name="father_id" id="father_id" data-value="fatherID" />
+	<input type="hidden" name="mother_id" id="mother_id" data-value="motherID" />
+	<fieldset>
+		<legend>Child's Name</legend>
+		<ul>
+			<li>
+				<label for="first_name">First: </label>
+				<input type="text" name="first_name" id="first_name" data-required="true" data-title="Please provide this person's first name." placeholder="Peter" autocorrect="on" autocapitalize="none" />
+			</li>
+			<li>
+				<label for="middle_name">Middle: </label>
+				<input type="text" name="middle_name" id="middle_name" data-required="false" data-title="" placeholder="Matthew" autocorrect="on" autocapitalize="none" />
+			</li>
+			<li>
+				<label for="last_name">Last: </label>
+				<input type="text" name="last_name" id="last_name" data-required="true" placeholder="" autocorrect="on" autocapitalize="none" data-value="newLastName" disabled />
+			</li>
+		</ul>
+	</fieldset>
+	<fieldset>
+		<legend>Date(s) &amp; Time(s)</legend>
 		<li>
-			<label for="first_name">First Name: </label>
-			<input type="text" name="first_name" id="first_name" data-required="true" data-title="Please provide this person's first name." placeholder="Peter" autocorrect="on" autocapitalize="none" />
-		</li>
-		<li>
-			<label for="middle_name">Middle Name: </label>
-			<input type="text" name="middle_name" id="middle_name" data-required="false" data-title="" placeholder="Matthew" autocorrect="on" autocapitalize="none" />
-		</li>
-		<li>
-			<label for="last_name">Last Name: </label>
-			<input type="text" name="last_name" id="last_name" data-required="true" placeholder="Bontrager" autocorrect="on" autocapitalize="none" data-value="newLastName" data-disabled="isDisabled" />
-		</li>
-		<li>
-			<label for="birthdate">Birthdate: </label>
+			<label for="birthdate">Birth Date: </label>
 			<input type="date" name="birthdate" id="birthdate" data-required="true" data-title="Please provide the date this person was born." />
 		</li>
-		<li class="sexSelectorContainer">
-			<select name="sex" id="sex">
-				<option value="">Choose One</option>
-				<option value="m">male</option>
-				<option value="f">female</option>
-			</select>
+		<li>
+			<label for="birthtime">Birth Time: </label>
+			<input type="time" name="birthtime" id="birthtime" data-required="false" />
 		</li>
-		<li class="formButtonContainer">
-			<button type="submit">Submit</button>
-		</li>
-	</ul>
+	</fieldset>
+	<fieldset>
+		<legend>Sex of the Child</legend>
+		<ul>
+			<li class="sexSelectorContainer">
+				<select name="sex" id="new-person-sex" data-required="true">
+					<option value="">Choose One</option>
+					<option value="m">male</option>
+					<option value="f">female</option>
+				</select>
+			</li>
+		</ul>
+	</fieldset>
+	<fieldset>
+		<ul>
+			<li class="formButtonContainer">
+				<button type="reset" id="reset-form" data-form="add-child">Reset</button>
+				<button type="submit">Submit</button>
+			</li>
+		</ul>
+	</fieldset>
 </form>

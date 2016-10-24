@@ -17,21 +17,20 @@
 		</nav>
 		<main>
 			<nav class="main-nav">
-				<button data-method="reveal" data-element="people">People</button>
-				<button data-method="reveal" data-element="families">Families</button>
+				<button data-method="reveal" data-element="people-section">People</button>
+				<button data-method="reveal" data-element="family-section">Families</button>
 			</nav>
 			<div class="main-content">
 				<div class="formContainer"></div>
 				<div class="peopleContainer">
-					<div id="families">
+				<h4>people</h4>
+					<section class="family-section">
 						<h4>families</h4>
-					</div>
-
-					<ul id="people">
-						<li class="familiesContainer">
-							<ul class="families"></ul>
-						</li>
-					</ul>
+						<ul id="families"></ul>
+					</section>
+					<section class="people-section">
+						<ul id="people"></ul>
+					</section>
 				</div>
 			</div>
 		</main>
@@ -42,6 +41,7 @@
 		</footer>
 		<script src="js/libs/uuid.js"></script>
 		<script src="js/libs/moment.min.js"></script>
+		<script src="js/moment-precise-range.js"></script>
 		<script src="js/libs/jquery.min.js"></script>
 		<script src="js/libs/jquery.loadTemplate.min.js"></script>
 		<script src="js/main.js"></script>
