@@ -33,6 +33,8 @@ $RECYCLE.BIN/
 #Directories to exclude
 bower_components
 
-
+# codekit
+.codekit-cache
 config.codekit
+*codekit*
 index.kit

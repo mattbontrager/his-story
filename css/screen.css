@@ -353,6 +353,10 @@ article section h4 {
   line-height: 1em;
   margin: 0.5em 0; }
 
+/**
+ * TODO: import fibonaccme random color generator
+ * 		 this will be for the family tree visual display grouping
+ */
 html {
   font-size: 10px; }
 
