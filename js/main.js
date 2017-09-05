@@ -11,29 +11,29 @@
 (function() {
 	"use strict";
 
-	const development = true;
-	const w = window;
-	const store = w.localStorage;
-	const log = function(msg, arg = false) {
+	var  development = true,
+	w = window,
+	store = w.localStorage,
+	log = function log(msg, arg = false) {
 		if (arg) {
 			!!development && w.console && console.log && console.log(msg + ': ', arg);
 		} else {
 			!!development && w.console && console.log && console.log(msg);
 		}
-	};
-	const logER = function(msg, arg = false) {
+	},
+	logER = function (msg, arg = false) {
 		if (arg) {
 			!!development && w.console && console.error && console.error(msg + ': ', arg);
 		} else {
 			!!development && w.console && console.error && console.error(msg);
 		}
 		return;
-	};
-	const checkObjectLength = function(obj = false) {
+	},
+	checkObjectLength = function checkObjectLength(obj = false) {
 		!obj && logER('no object passed to checkObjectLength');
 
-		const has = Object.prototype.hasOwnProperty;
-		let key = 0;
+		var has = Object.prototype.hasOwnProperty,
+			key = 0;
 
 		if (typeof obj !== "object") {
 			return key;
@@ -45,13 +45,13 @@
 			}
 		}
 		return key;
-	};
-	const isEven = function(num) {
+	},
+	isEven = function isEven(num) {
 		!num && logER('no num passed to isEven');
 
 		log('in isEven' + num);
 		return (parseInt(num, 10) %2 === 0) ? true: false;
-	};
+	},
 	/**
 	 * The WindowBase64.btoa() method creates a base-64 encoded ASCII string
 	 * from a String object in which each character in the string is treated
@@ -62,10 +62,11 @@
 	 * @param  {String}   str the string to encode
 	 * @return {String}       the encoded string
 	 */
-	const encode = function(str) {
+	encode = function encode(str) {
 		!str && logER('no string to encode');
 		return w.btoa(str);
-	};
+	},
+
 	/**
 	 * The WindowBase64.atob() function decodes a string of data which has been
 	 * encoded using base-64 encoding.
@@ -75,268 +76,437 @@
 	 * @param  {String}   str the string to decode
 	 * @return {String}       the decoded string
 	 */
-	const decode = function(str) {
+	decode = function decode(str) {
 		!str && logER('no string to decode');
 		return w.atob(str);
-	};
+	},
 	/**
 	 * Returns a random integer, 5 digits in length, each digit being between min and max
 	 * @date   2016-10-07
 	 * @author mattbontrager
 	 * @return {Integer}       the random number
 	 */
-	const getRandomNumber = function() {
+	getRandomNumber = function getRandomNumber() {
 		var min = Math.ceil(11111),
 			max = Math.floor(44444);
 		return Math.floor(Math.random() * (max - min + 1)) + min;
-	};
+	},
+	Person = function Person() {
+		this.id = uuid.v4();
 
-	class Person {
-		constructor(sex) {
-			this.id = uuid.v4();
+		this.family_association = {
+			up: '', // parents
+			across: '', // spouse
+			down: '' // children
+		};
 
-			this.sex = (sex) ? sex: '';
-
-			this.family_association = {
-				up: '', // parents
-				across: '', // spouse
-				down: '' // children
-			};
-
-			this.relationships = {
-				family: {
-					id: '',
-					parents: {
-						father: {},
-						mother: {}
-					},
-					spouse: {},
-					siblings: {
-						brothers: [],
-						sisters: [],
-						unknown: [],
-					},
-					spouses: [],
-					children: {
-						sons: [],
-						daughters: [],
-						unknown: []
-					}
+		this.relationships = {
+			family: {
+				id: '',
+				parents: {
+					father: '',
+					mother: '',
+					unknown: []
 				},
-				friends: []
-			};
-
-			this.name = {
-				salutation: '',
-				first: '',
-				middle: '',
-				last: {
-					given: '',
-					adopted: '',
-					married: '',
-					maiden: ''
+				spouse: '',
+				siblings: {
+					brothers: [],
+					sisters: [],
+					unknown: [],
 				},
-				nickname: '',
-				preferred: '',
-				suffix: ''
-			};
+				spouses: [],
+				children: {
+					sons: [],
+					daughters: [],
+					unknown: []
+				}
+			},
+			friends: []
+		};
 
-			this.race = '';
+		this.race = '';
 
-			this.birth = {
-				date: {},
-				location: ''
-			};
-			this.death = {
-				date: {},
-				location: '',
-				cause: ''
-			};
+		this.birth = {
+			date: {},
+			location: ''
+		};
 
-			this.height = {
+		this.death = {
+			date: {},
+			location: '',
+			cause: ''
+		};
+
+		this.physical_attributes = {
+			height: {
 				feet: 0,
 				inches: 0
-			};
-
-			this.weight = {
+			},
+			weight: {
 				pounds: 0,
 				ounces: 0
-			};
+			},
+			hair: {
+				color: ''
+			},
+			eyes: {
+				color: ''
+			},
+			handed: '' // left, right, or ambidexterous
+		};
 
-			this.attributes = {
-				hair: {
-					color: ''
-				},
-				eyes: {
-					color: ''
-				},
-				handed: '' // left, right, or ambidexterous
-			};
-		}
+		this.getLifeSpan = function getLifeSpan() {
+			!!development && console.log('in getLifeSpan');
 
-		get lifespan() {
-			log('in get lifespan');
 			var lifespan,
 				birthday = moment(this.birth.date),
 				deathday = (moment(this.death.date)) ? moment(this.death.date): false;
 
+			if (!birthday || !deathday) {
+				return false;
+			}
+
 			if (this.lifespan) {
 				return this.lifespan;
-			} else if (!deathday || !birthday) {
+			}
+
+			var span = moment.preciseDiff(birthday, deathday, true),
+				spanYears = {years: span.years},
+				lsToSet = moment.duration().add(spanYears).humanize();
+
+			this.lifespan = lsToSet;
+
+			return this.lifespan;
+		}
+
+		this.setLifeSpan = function setLifeSpan(ls) {
+			!!development && console.log('in setLifeSpan');
+			if (!arguments.length) {
+				logER('no span sent to setLifeSpan');
 				return false;
-			} else {
-				var span = moment.preciseDiff(birthday, deathday, true),
-					spanYears = {years: span.years},
-					lsToSet = moment.duration().add(spanYears).humanize();
-
-				this.lifespan = lsToSet;
-				return this.lifespan;
 			}
-		}
-
-		set lifespan(lifespan) {
-			!lifespan && logER('no lifespan was sent to set lifespan');
-			log('in set lifespan', lifespan);
 			this.lifespan = moment.duration().add(lifespan).humanize();
-		}
+		};
 
-		get spouse() {
-			// log('in get spouse', this.relationships.family.spouse);
-			return this.relationships.family.spouse;
-			// return (this.relationships.family.spouse.length) ? this.relationships.family.spouse: false;
-		}
+		this.getSpouse = function getSpouse() {
+			!!development && console.log('in getSpouse');
+			return People.find(function(person) {
+				return person.id === this.relationships.family.spouse;
+			});
+		};
 
-		set spouse(thespouse) {
-			!thespouse && logER('no spouse passed to set spouse');
-			log('in set spouse with', thespouse);
-			this.relationships.family.spouse = thespouse;
-		}
-
-		get children() {
-			let childs = this.relationships.family.children;
-			let hasChildren = ((childs.sons.length) || (childs.daughters.length) || (childs.unknown.length)) ? true: false;
-
-			!!hasChildren && log('in get children', this.relationships.family.children);
-			return (hasChildren) ? this.relationships.family.children: false;
-		}
-
-		set children(childObj) {
-			!childObj && logER('no child passed to set children');
-			log('in set children with', childObj);
-			this.relationships.family.children[childObj.type].push(childObj.child);
-		}
-
-		get siblings() {
-			let sibs = this.relationships.family.siblings;
-			let haveSiblings = (sibs.brothers.length || sibs.sisters.length || sibs.unknown.length) ? true: false;
-			if (haveSiblings) {
-				log('in get siblings', sibs);
+		this.setSpouse = function setSpouse(sid) {
+			!!development && console.log('in setSpouse');
+			if (!arguments.length) {
+				logER('no spouse id passed to set spouse');
+				return false;
 			}
-			return (haveSiblings) ? sibs: false;
+			this.relationships.family.spouse = sid;
 		}
 
-		set siblings(sibObj) {
-			!sibObj && logER('no sibling passed to set siblings');
-			log('setting a ' + sibObj.type + ' sibling', sibObj.sibling);
+		this.getChildren = function getChildren() {
+			!!development && console.log('in getChildren');
+			var childs = this.relationships.family.children,
+				sons = childs.sons,
+				daughters = childs.daughters,
+				unknowns = childs.unknown,
+				hasSons = sons.length,
+				hasDaughters = daughters.length,
+				hasUnknowns = unknowns.length,
+				hasChildren = (hasSons || hasDaughters || hasUnknowns) ? true: false,
+				children = [];
+			if (!hasChildren) {
+				return false;
+			}
+			if (hasSons) {
+				$.each(sons, function(i, son) {
+					var s = People.find(function(person) {
+						person.id === son;
+					});
+					if (s) {
+						children.push(s);
+					}
+				});
+			}
+			if (hasDaughters) {
+				$.each(daughters, function(i, daughter) {
+					var d = People.find(function(person) {
+						person.id === daughter;
+					});
+					if (d) {
+						children.push(s);
+					}
+				});
+			}
+			if (hasUnknowns) {
+				$.each(unknowns, function(i, uk) {
+					var u = People.find(function(person) {
+						person.id === uk;
+					});
+					if (u) {
+						children.push(u);
+					}
+				});
+			}
+			return children;
+		};
+
+		this.setChild = function setChild(childObj) {
+			!!development && console.log('in setChild');
+			if (!arguments.length) {
+				logER('no childObj passed to setChild');
+				return false;
+			}
+			this.relationships.family.children[childObj.type].push(childObj.child);
+		};
+
+		this.getSiblings = function getSiblings() {
+			!!development && console.log('in getSiblings');
+			var sibs = this.relationships.family.siblings,
+				hasBrothers = sibs.brothers.length,
+				brothers = (hasBrothers) ? sibs.brothers: undefined,
+				hasSisters = sibs.sisters.length,
+				sisters = (hasSisters) ? sibs.sisters: undefined,
+				hasUnknowns = sibs.unknown.length,
+				unknowns = (hasUnknowns) ? sibs.unknown: undefined,
+				haveSiblings = (hasBrothers || hasSisters || hasUnknowns) ? true: false,
+				siblings = [];
+
+			if (!haveSiblings) {
+				return false;
+			}
+
+			$.each(brothers, function(i, brother) {
+				var b = People.find(function(person) {
+					return person.id === brother;
+				});
+				if (b) {
+					siblings.push(b);
+				}
+			});
+
+			$.each(sisters, function(i, sister) {
+				var s = People.find(function(person) {
+					return person.id === sister;
+				});
+				if (s) {
+					siblings.push(s);
+				}
+			});
+
+			$.each(unknowns, function(i, uk) {
+				var u = People.find(function(person) {
+					return person.id === uk;
+				});
+				if (u) {
+					siblings.push(u);
+				}
+			});
+			return siblings;
+		};
+
+		this.setSibling = function setSibling(sibObj) {
+			!!development && console.log('in setSibling');
+			if (!arguments.length) {
+				logER('no sibling id sent to setSibling');
+				return false;
+			}
 			this.relationships.family.siblings[sibObj.type].push(sibObj.sibling);
-		}
+		};
 
-		get parents() {
-			log('getting parents', this.relationships.family.parents);
-			return this.relationships.family.parents;
-		}
+		this.getParents = function getParents() {
+			!!development && console.log('in getParents');
+			var pars = this.relationships.family.parents,
+				mom = pars.mother,
+				pop = pars.father,
+				hasFather = false,
+				hasMother = false,
+				parents = {},
+				father = People.find(function(person) {
+					return person.id === pop.id;
+				}),
+				mother = People.find(function(person) {
+					return person.id === mom.id;
+				});
 
-		set parents(rents) {
-			let p = this.relationships.family.parents;
-			p.father = rents.father;
-			p.mother = rents.mother;
-			log('set parents', p);
-		}
+			if (father) {
+				hasFather = true;
+				parents.father = father;
+			}
+			if (mother) {
+				hasMother = true;
+				parents.mother = mother;
+			}
+			if (hasFather || hasMother) {
+				return parents;
+			} else {
+				return false;
+			}
+		};
 
-		get grandparents() {
+		this.setParent = function setParent(parentObj) {
+			!!development && console.log('in setParent');
+			if (!arguments.length) {
+				logER('no parentObj sent to setParent');
+				return false;
+			}
+			this.relationships.family.parents[parentObj.type] = parentObj.parent;
+		};
+
+		this.getGrandParents = function getGrandParents() {
+			!!development && console.log('in getGrandParents');
 			/**
 			 * paternal grandparents
 			 * @type {Array}
 			 */
-			let pgps = [];
+			var pgps = [],
 			/**
 			 * maternal grandparents
 			 * @type {Array}
 			 */
-			let mgps = [];
+				mgps = [];
 
 			/**
 			 * TODO: finish this
 			 */
 		}
 
-		set grandparents(gps) {
-			log('in set grandparents', gps);
-			let pgps = gps.pgps;
-			let mgms = gps.mgms;
+		this.setGrandParent = function setGrandParent(gParentObj) {
+			!!development && console.log('in setGrandParent');
+			if (!arguments.length) {
+				logER('no gParentObj sent to setGrandParent');
+				return false;
+			}
+			this.relationships.family.grandparents[gParentObj.type] = gParentObj.gParent;
 			/**
 			 * TODO: write this
 			 */
-		}
-	}
+		};
 
-	var People = [],
-		$sex = $('form').find('#new-person-sex'),
-		$people = $('#people'),
-		$families = $('.families'),
-		drags = $people.find('.male'),
-		drops = $people.find('.female'),
-		$nav = $('nav'),
-		$navButton = $nav.find('button'),
-		$formContainer = $('.formContainer');
+		return this;
+	},
+	Man = function Man(opts) {
+		var m = new Person();
+		m.sex = 'm';
+		m.name = {
+			salutation: '',
+			first: '',
+			middle: '',
+			last: {
+				given: '',
+				adopted: ''
+			},
+			nickname: '',
+			preferred: '',
+			suffix: ''
+		};
 
-	const App = (function() {
-		var addChildForm = function(parents) {
-			!parents && logER('no parents were passed to addChildForm');
-			if ($formContainer.is(':hidden')) {
-				$formContainer.show();
+		if (arguments.length) {
+			for (var i in opts) {
+				if (i && opts.hasOwnProperty(i) && opts[i] !== '') {
+					!!development && console.log('declaring ' + i + ' to ' + opts[i]);
+					m[i] = opts[i];
+				}
 			}
+		}
+		return m;
+	},
+	Woman = function Woman(opts) {
+		!!development && console.log('in Woman');
+		var w = new Person();
 
-			$formContainer.loadTemplate('tpl/add-child-form.html', {
-				fatherID: parents.father.id,
-				motherID: parents.mother.id,
-				newLastName: parents.father.name.last.given
-			}, {
-				success: formBindings
-			});
-		},
-			handleIntercourse = function(fatherID, motherID) {
+		w.sex = 'f';
+		w.name = {
+			salutation: '',
+			first: '',
+			middle: '',
+			last: {
+				given: '',
+				adopted: '',
+				married: '',
+				maiden: ''
+			},
+			nickname: '',
+			preferred: '',
+			suffix: ''
+		};
+
+		if (arguments.length) {
+			for (var i in opts) {
+				if (i && opts.hasOwnProperty(i) && opts[i] !== '') {
+					!!development && console.log('declaring ' + i + ' to ' + opts[i]);
+					w[i] = opts[i];
+				}
+			}
+		}
+		return w;
+	},
+	People = [],
+	$sex = $('form').find('#new-person-sex'),
+	$people = $('#people'),
+	$families = $('.families'),
+	drags = $people.find('.male'),
+	drops = $people.find('.female'),
+	$nav = $('nav'),
+	$navButton = $nav.find('button'),
+	$formContainer = $('.formContainer'),
+	App = (function App() {
+		var getPerson = function getPerson(pid) {
+				!!development && console.log('in getPerson');
+				if (!arguments.length) {
+					logER('no person id sent to getPerson');
+					return false;
+				}
+				var person = People.find(function(person) {
+					return person.id === pid;
+				});
+
+				return (person) ? person: false;
+			},
+			addChildForm = function addChildForm(parents) {
+				!parents && logER('no parents were passed to addChildForm');
+				if ($formContainer.is(':hidden')) {
+					$formContainer.show();
+				}
+
+				$formContainer.loadTemplate('tpl/add-child-form.html', {
+					fatherID: parents.father.id,
+					motherID: parents.mother.id,
+					newLastName: parents.father.name.last.given
+				}, {
+					success: formBindings
+				});
+			},
+			handleIntercourse = function handleIntercourse(fatherID, motherID) {
 				log('in handleIntercourse');
-				if (arguments.length !== 2) {
+				if (arguments.length < 2) {
 					logER('fatherID || motherID missing in handleIntercourse');
 				}
 
 				function marryThem(father, mother) {
-					let parents = {};
+					var parents = {};
 
 					if (mother.relationships.family.parents.mother === father.relationships.family.spouse.id) {
 						alert('incest alert!');
 					}
 
 					/**
-					 * if the father has no current spouse, make mother of child his wife
+					 * if the father has no current spouse, make the mother of his child his wife
 					 *
-					 * @date   2017-03-27
+					 * @date   2017-09-04
 					 * @author mattbontrager
-					 * @param  {string}   father.relationships.family.spouse              current spouse
-					 *
+					 * @param  {string}   father.relationships.family.spouse id of the mother of his child
 					 */
 					if (!father.relationships.family.spouse) {
 						father.relationships.family.spouse = mother.id;
 					}
 
 					/**
-					 * if the mother of the child isn't his current wife..
-					 * 	make it so and add the previous woman to the spouses array
+					 * if the mother of the child isn't his current wife, make it so and add the previous woman to the spouses array
 					 *
-					 * @date   2017-03-27
+					 * @date   2017-09-04
 					 * @author mattbontrager
-					 * @param  {string}   father.relationships.family.spouse             current spouse id
+					 * @param  {string}   father.relationships.family.spouse   id of the mother of most recent child
 					 */
 					if (father.relationships.family.spouse !== mother.id) {
 						father.relationships.family.spouses.push(father.relationships.family.spouse);
@@ -348,7 +518,7 @@
 					 *
 					 * @date   2017-03-27
 					 * @author mattbontrager
-					 * @param  {string}   !mother.relationships.family.spouse           the mother's husband
+					 * @param  {string}   mother.relationships.family.spouse   the mother's husband
 					 *
 					 */
 					if (!mother.relationships.family.spouse) {
@@ -356,12 +526,11 @@
 					}
 
 					/**
-					 * if mother is currently married to another man..
-					 * 	make it so and add the previous man to the spouses array
+					 * if mother is currently married to another man, marry her to current man and add the previous man to the spouses array
 					 *
 					 * @date   2017-03-27
 					 * @author mattbontrager
-					 * @param  {string}   mother.relationships.family.spouse !             the mother's current spouse
+					 * @param  {string}   mother.relationships.family.spouse   the mother's current spouse
 					 *
 					 */
 					if (mother.relationships.family.spouse !== father.id) {
@@ -371,7 +540,7 @@
 
 
 					mother.name.last.maiden = (mother.name.last.adopted.length) ? mother.name.last.adopted: mother.name.last.given;
-					mother.name.last.married = father.name.last.given;
+					mother.name.last.married = (father.name.last.adopted.length) ? father.name.last.adopted: father.name.last.given;
 
 					/**
 					 * update mothers last name in DOM
@@ -395,44 +564,48 @@
 					log('father', father);
 					log('mother', mother);
 
-					if (checkObjectLength(mother.relationships.family.parents.mother) > 0) {
+					if (mother.relationships.family.parents.mother.length) {
 						log('mothers mother', mother.relationships.family.parents.mother);
 					}
 
 					return parents;
 				}
 
-				let father = People.find(function(person) {
-					return person.id === fatherID;
-				});
+				var father = getPerson(fatherID),
+					mother = getPerson(motherID),
+					hasBothParents = (father && mother) ? true: false,
+					hasFather = (father) ? true: false,
+					hasMother = (mother) ? true: false,
+					parents;
 
-				let mother = People.find(function(person) {
-					return person.id === motherID;
-				});
-
-				let parents;
-
-				if (father && mother) {
+				if (!hasBothParents) {
+					logER('couldnt find either the father or the mother. check here to find out.', {'father': father, 'mother': mother});
+				} else if (!hasFather) {
+					logER('couldnt find the father. check here to find out.', {'father': father});
+				} else if (!hasMother) {
+					logER('couldnt find the mother. check here to find out.', {'mother': mother});
+				} else {
 					parents = marryThem(father, mother);
 
 					if (checkObjectLength(parents) > 0) {
-						var ppl = [parents.father, parents.mother];
+						// var ppl = [parents.father, parents.mother];
 						// updateLocalPeople(ppl);
 						addChildForm(parents);
 					} else {
 						logER('unable to marry the parents', parents);
 					}
-				} else {
-					logER('couldnt find either the father or the mother. check here to find out.', {'father': father, 'mother': mother});
 				}
-			}, appendPerson = function(the_person) {
+			},
+			appendPerson = function appendPerson(the_person) {
 				log('the_person: ', the_person);
 				addPersonToDom(the_person);
 				addPersonToStorage(the_person);
-			}, clearForm = function() {
+			},
+			clearForm = function clearForm() {
 				log('in clear form');
 				$formContainer.fadeOut().css('background-color', 'inherit').empty();
-			}, addPersonToDom = function(person) {
+			},
+			addPersonToDom = function addPersonToDom(person) {
 				/**
 				 * TODO: create family associations
 				 * 		 this will be for the visual grouping of families
@@ -484,12 +657,13 @@
 				}
 
 				$people.loadTemplate("tpl/person.html", data, {append: true});
-			}, addPersonToStorage = function(the_person) {
+			},
+			addPersonToStorage = function addPersonToStorage(the_person) {
 				var storedPeople = JSON.parse(localStorage.getItem('People')) || [];
-
 				storedPeople.push(the_person);
 				localStorage.setItem('People', JSON.stringify(storedPeople));
-			}, initialPersonList = function() {
+			},
+			initialPersonList = function initialPersonList() {
 				log('in initialPersonList');
 				$people.empty();
 
@@ -498,7 +672,8 @@
 				$.each(People, function(i, person) {
 					addPersonToDom(person);
 				});
-			}, formBindings = function() {
+			},
+			formBindings = function formBindings() {
 				log('in form bindings');
 
 				$('.show-death-date-and-time').hide();
@@ -560,7 +735,8 @@
 
 					clearForm();
 				});
-			}, bindings = function() {
+			},
+			bindings = function bindings() {
 				log('in bindings');
 				var createItem = function(item) {
 					log('in createItem', item);
@@ -648,45 +824,59 @@
 				});
 
 				formBindings();
-			}, getAllPeople = function() {
+			},
+			getAllPeople = function getAllPeople() {
 				log('in getAllPeople');
-				return $.Deferred(function deferredGetAllPeople(dgap) {
-					try {
-						var storedPeople = JSON.parse(store.getItem('People'));
-						if (storedPeople) {
-							People.length = 0;
-							$.each(storedPeople, function(i, person) {
-								let np = new Person(person);
-								console.log('new person from storage: ', np);
-								People.push(person);
-							});
-						}
-						dgap.resolve();
-					} catch(e) {
-						dgap.reject(e);
+
+				var dfd = $.Deferred();
+
+				try {
+					var storedPeople = JSON.parse(store.getItem('People'));
+					if (storedPeople) {
+						People.length = 0;
+						$.each(storedPeople, function(i, person) {
+							let np = new Person(person);
+							console.log('new person from storage: ', np);
+							People.push(person);
+						});
 					}
-				}).promise();
+					dfd.resolve();
+				} catch (e) {
+					dfd.reject(e);
+				}
+
+				return dfd.promise();
 			};
 
 		return {
 			init: function() {
 				log('in app init');
+
 				$('.family-section').hide();
-				$.when(getAllPeople()).then(function getAllPeopleSuccess() {
+
+				function getAllPeopleSuccess() {
 					log('in getAllPeopleSuccess');
+
 					bindings();
+
 					formBindings();
 
-					window.Person = Person;
+					if (development) {
+						window.Person = Person;
+					}
 
 					if (People.length && development) {
 						window.People = People;
 					}
 
 					!!People.length && initialPersonList();
-				}, function getAllPeopleFailure(err) {
-					error('in getAllPeopleFailure', err);
-				});
+				}
+
+				function getAllPeopleFailure(err) {
+					logER('in getAllPeopleFailure', err);
+				}
+
+				$.when(getAllPeople()).then(getAllPeopleSuccess, getAllPeopleFailure);
 			}
 		};
 	}());
