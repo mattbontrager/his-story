@@ -607,6 +607,13 @@
 				log('in clear form');
 				$formContainer.fadeOut().css('background-color', 'inherit').empty();
 			},
+			personFactory = function personFactory(person) {
+				!!development && console.log('in personFactory');
+				if (!arguments.length) {
+					!!development && console.error('no person sent to personFactory');
+					return;
+				}
+			}
 			addPersonToDom = function addPersonToDom(person) {
 				/**
 				 * TODO: create family associations

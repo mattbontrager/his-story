@@ -39,11 +39,152 @@
 				<img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc/4.0/88x31.png" />
 			</a> This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Attribution-NonCommercial 4.0 International License</a>.
 		</footer>
-		<script src="js/libs/uuid.js"></script>
-		<script src="js/libs/moment.min.js"></script>
-		<script src="js/moment-precise-range.js"></script>
-		<script src="js/libs/jquery.min.js"></script>
-		<script src="js/libs/jquery.loadTemplate.min.js"></script>
-		<script src="js/main.js"></script>
+		<!-- templates -->
+		<!-- ADD CHILD TEMPLATE -->
+		<template id="add-child-form-template">
+			<form id="add-child">
+				<input type="hidden" name="father_id" id="father_id" data-value="fatherID" />
+				<input type="hidden" name="mother_id" id="mother_id" data-value="motherID" />
+				<fieldset>
+					<legend>Child's Name</legend>
+					<ul>
+						<li>
+							<label for="first_name">First: </label>
+							<input type="text" name="first_name" id="first_name" data-required="true" data-title="Please provide this person's first name." placeholder="Peter" autocorrect="on" autocapitalize="none" />
+						</li>
+						<li>
+							<label for="middle_name">Middle: </label>
+							<input type="text" name="middle_name" id="middle_name" data-required="false" data-title="" placeholder="Matthew" autocorrect="on" autocapitalize="none" />
+						</li>
+						<li>
+							<label for="last_name">Last: </label>
+							<input type="text" name="last_name" id="last_name" data-required="true" placeholder="" autocorrect="on" autocapitalize="none" data-value="newLastName" disabled />
+						</li>
+					</ul>
+				</fieldset>
+				<fieldset>
+					<legend>Date(s) &amp; Time(s)</legend>
+					<li>
+						<label for="birthdate">Birth Date: </label>
+						<input type="date" name="birthdate" id="birthdate" data-required="true" data-title="Please provide the date this person was born." />
+					</li>
+					<li>
+						<label for="birthtime">Birth Time: </label>
+						<input type="time" name="birthtime" id="birthtime" data-required="false" />
+					</li>
+				</fieldset>
+				<fieldset>
+					<legend>Sex of the Child</legend>
+					<ul>
+						<li class="sexSelectorContainer">
+							<select name="sex" id="new-person-sex" data-required="true">
+								<option value="">Choose One</option>
+								<option value="m">male</option>
+								<option value="f">female</option>
+							</select>
+						</li>
+					</ul>
+				</fieldset>
+				<fieldset>
+					<ul>
+						<li class="formButtonContainer">
+							<button type="reset" id="reset-form" data-form="add-child">Reset</button>
+							<button type="submit">Submit</button>
+						</li>
+					</ul>
+				</fieldset>
+			</form>
+		</template>
+
+		<!-- ADD PERSON TEMPLATE -->
+		<template id="add-person-template">
+			<form id="add-person">
+				<input id="new-person-sex" type="hidden" name="sex" data-value="newPersonSex" />
+				<fieldset>
+					<legend>Name</legend>
+					<ul>
+						<li>
+							<label for="first_name">First Name: </label>
+							<input type="text" name="first_name" id="first_name" data-required="true" data-title="Please provide this person's first name." placeholder="Pat" autocorrect="on" autocapitalize="none" />
+						</li>
+						<li>
+							<label for="middle_name">Middle Name: </label>
+							<input type="text" name="middle_name" id="middle_name" data-required="false" data-title="" placeholder="Jo" autocorrect="on" autocapitalize="none" />
+						</li>
+						<li>
+							<label for="last_name">Last Name: </label>
+							<input type="text" name="last_name" id="last_name" data-required="true" placeholder="Smith" autocorrect="on" autocapitalize="none" />
+						</li>
+					</ul>
+				</fieldset>
+				<fieldset>
+					<legend>Date(s) &amp; Time(s)</legend>
+					<ul>
+						<li>
+							<label for="living_or_dead">Is this person still alive? </label>
+							<select name="living_or_dead" id="living_or_dead" data-required="true">
+								<option value="">Choose One</option>
+								<option value="yes">Yes</option>
+								<option value="no">No</option>
+							</select>
+						</li>
+						<li>
+							<label for="birthdate">Birth Date: </label>
+							<input type="date" name="birthdate" id="birthdate" data-required="true" data-title="Please provide the date this person was born." />
+						</li>
+						<li>
+							<label for="birthtime">Birth Time: </label>
+							<input type="time" name="birthtime" id="birthtime" data-required="false" />
+						</li>
+						<li class="hidden show-death-date-and-time">
+							<label for="deathdate">Death Date: </label>
+							<input type="date" name="deathdate" id="deathdate" data-required="true" data-title="Please provide the date this person died." />
+						</li>
+						<li class="hidden show-death-date-and-time">
+							<label for="deathtime">Death Time: </label>
+							<input type="time" name="deathtime" id="deathtime" data-required="false" />
+						</li>
+					</ul>
+				</fieldset>
+				<fieldset>
+					<ul>
+						<li class="formButtonContainer">
+							<button type="reset" id="reset-form" data-form="add-person">Reset</button>
+							<button type="submit" id="submit-form" data-form="add-person">Submit</button>
+						</li>
+					</ul>
+				</fieldset>
+			</form>
+		</template>
+
+		<!-- PERSON TEMPLATE -->
+		<template id="person-template">
+			<li data-template-bind='[
+				{"attribute": "data-id", "value": "elemID"},
+				{"attribute": "class", "value": "theClass"},
+				{"attribute": "draggable", "value": "isDraggable"},
+				{"attribute": "data-draggable", "value": "isDraggable"}
+			]'>
+				<header class="nameContainer">
+					<p class="preferredName name" data-content-text="preferredName"></p>
+					<p>
+						<span class="firstName name" data-content-text="firstName"></span>
+						<span class="middleName name" data-content-text="middleName"></span>
+						<span class="maidenName name" data-content-text="maidenName"></span>
+						<span class="lastName name" data-content-text="lastName"></span>
+					</p>
+
+				</header>
+				<figure>
+					<img class="personImage" data-src="personPicture">
+					<figcaption>explanatory caption</figcaption>
+				</figure>
+				<div class="dates">
+					<p class="birthDate" data-content="bday"></p>
+				</div>
+			</li>
+		</template>
+		<script src="http://localhost:3000/socket.io/socket.io.js"></script>
+		<script src="js/min/main.js"></script>
 	</body>
 </html>
