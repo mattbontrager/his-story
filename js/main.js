@@ -10,10 +10,9 @@
  * work. If not, see <http://creativecommons.org/licenses/by-nc-nd/4.0/>.
  */
 
-(function() {
-	"use strict";
+"use strict";
 
-	var  development = true,
+var development = true,
 	w = window,
 	store = w.localStorage,
 	log = function log(msg, arg) {
@@ -459,6 +458,7 @@
 					logER('no person id sent to getPerson');
 					return false;
 				}
+
 				var person = People.find(function(person) {
 					return person.id === pid;
 				});
@@ -475,9 +475,7 @@
 					fatherID: parents.father.id,
 					motherID: parents.mother.id,
 					newLastName: parents.father.name.last.given
-				}, {
-					success: formBindings
-				});
+				}, {success: formBindings});
 			},
 			handleIntercourse = function handleIntercourse(fatherID, motherID) {
 				log('in handleIntercourse');
@@ -639,11 +637,7 @@
 							return person.name.last.given;
 						} else {
 							log('married name', person.name.last.married);
-							if (person.name.last.married.length) {
-								return person.name.last.married;
-							} else {
-								return person.name.last.given;
-							}
+							return person.name.last.married.length ? person.name.last.married: person.name.last.given;
 						}
 					}()),
 					data = {
@@ -764,9 +758,7 @@
 					$fc.css('background-color', fcBGC);
 					$fc.loadTemplate('tpl/add-person-form.html', {
 						newPersonSex: newPerson.sex
-					}, {
-						success: formBindings
-					});
+					}, {success: formBindings});
 				}, revealElement = function(elem) {
 					log('in reveal element with ', elem);
 					var $element = $('.' + elem),
@@ -892,5 +884,6 @@
 		};
 	}());
 
+$(function() {
 	App.init();
-}());
+});

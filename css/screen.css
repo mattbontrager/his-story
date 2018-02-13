@@ -52,7 +52,7 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
     .disappearLargeMedia {
       display: none; } }
 
-.flex-parent, body main .main-content .peopleContainer ul, body main .main-content .peopleContainer ul .personCard .nameContainer, body nav, body main .main-content, body main .main-content .formContainer form fieldset ul li, body main .main-content .peopleContainer ul .personCard .dates, body footer, body main .main-content .peopleContainer ul > li > .family, body main .main-content .peopleContainer ul .personCard figure, body, body main, body main .main-content .peopleContainer ul .personCard, body main .main-content article header, body main .main-content article section, body main .main-content article section .details-container .details-header, body main .main-content article, body main .main-content article section .details-container {
+.flex-parent, body main .main-content .peopleContainer ul, body main .main-content .peopleContainer ul .personCard .nameContainer, body nav, body main .main-content, body main .main-content .formContainer form fieldset ul li, body main .main-content .peopleContainer ul .personCard .dates, body main .main-content .peopleContainer ul > li > .family, body main .main-content .peopleContainer ul .personCard figure, body, body main, body main .main-content .peopleContainer ul .personCard, body main .main-content article header, body main .main-content article section, body main .main-content article section .details-container .details-header, body main .main-content .peopleContainer, body main .main-content article, body main .main-content article section .details-container, body footer {
   display: -webkit-flex;
   display: flex; }
 
@@ -60,7 +60,7 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
   -webkit-flex-flow: row wrap;
   flex-flow: row wrap; }
 
-body nav, body main .main-content, body main .main-content .formContainer form fieldset ul li, body main .main-content .peopleContainer ul .personCard .dates, body footer {
+body nav, body main .main-content, body main .main-content .formContainer form fieldset ul li, body main .main-content .peopleContainer ul .personCard .dates {
   -webkit-flex-flow: row nowrap;
   flex-flow: row nowrap; }
 
@@ -72,11 +72,11 @@ body, body main, body main .main-content .peopleContainer ul .personCard {
   -webkit-flex-flow: column nowrap;
   flex-flow: column nowrap; }
 
-body main .main-content article header, body main .main-content article section, body main .main-content article section .details-container .details-header {
+body main .main-content article header, body main .main-content article section, body main .main-content article section .details-container .details-header, body main .main-content .peopleContainer {
   -webkit-flex-direction: row;
   flex-direction: row; }
 
-body main .main-content article, body main .main-content article section .details-container {
+body main .main-content article, body main .main-content article section .details-container, body footer {
   -webkit-flex-direction: column;
   flex-direction: column; }
 
@@ -510,7 +510,15 @@ body {
                 text-align: center; }
       body main .main-content .peopleContainer {
         flex: auto;
-        box-sizing: border-box; }
+        box-sizing: border-box;
+        align-items: stretch;
+        justify-content: space-evenly; }
+        body main .main-content .peopleContainer > section {
+          width: 99vw;
+          flex: none; }
+          body main .main-content .peopleContainer > section > h4 {
+            text-align: center;
+            text-transform: capitalize; }
         body main .main-content .peopleContainer ul {
           list-style-image: none;
           list-style-type: none;

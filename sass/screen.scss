@@ -181,6 +181,17 @@ body {
 			.peopleContainer {
 				flex: auto;
 				box-sizing: border-box;
+				@extend %flexRow;
+				align-items: stretch;
+				justify-content: space-evenly;
+				> section {
+					width: 99vw;
+					flex: none;
+					> h4 {
+						text-align: center;
+						text-transform: capitalize;
+					}
+				}
 				ul {
 					@include no-bullet;
 					@extend %flexRowWrap;
@@ -265,7 +276,7 @@ body {
 
 	footer {
 		@include flex(1);
-		@extend %flexRowNoWrap;
+		@extend %flexColumn;
 		@extend %absoluteCenter;
 	}
 }
