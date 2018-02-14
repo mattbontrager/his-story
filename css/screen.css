@@ -52,27 +52,27 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
     .disappearLargeMedia {
       display: none; } }
 
-.flex-parent, body main .main-content .peopleContainer ul, body main .main-content .peopleContainer ul .personCard .nameContainer, body nav, body main .main-content, body main .main-content .formContainer form fieldset ul li, body main .main-content .peopleContainer ul .personCard .dates, body main .main-content .peopleContainer ul > li > .family, body main .main-content .peopleContainer ul .personCard figure, body, body main, body main .main-content .peopleContainer ul .personCard, body main .main-content article header, body main .main-content article section, body main .main-content article section .details-container .details-header, body main .main-content .peopleContainer, body main .main-content article, body main .main-content article section .details-container, body footer {
+.flex-parent, body main .main-content .people-container ul, body main .main-content .people-container ul .personCard .nameContainer, body nav, body main .main-content, body main .main-content .form-container form fieldset ul li, body main .main-content .people-container ul .personCard .dates, body main .main-content .people-container ul > li > .family, body main .main-content .people-container ul .personCard figure, body, body main, body main .main-content .people-container ul .personCard, body main .main-content article header, body main .main-content article section, body main .main-content article section .details-container .details-header, body main .main-content .people-container, body main .main-content article, body main .main-content article section .details-container, body footer {
   display: -webkit-flex;
   display: flex; }
 
-.flex-parent, body main .main-content .peopleContainer ul, body main .main-content .peopleContainer ul .personCard .nameContainer {
+.flex-parent, body main .main-content .people-container ul, body main .main-content .people-container ul .personCard .nameContainer {
   -webkit-flex-flow: row wrap;
   flex-flow: row wrap; }
 
-body nav, body main .main-content, body main .main-content .formContainer form fieldset ul li, body main .main-content .peopleContainer ul .personCard .dates {
+body nav, body main .main-content, body main .main-content .form-container form fieldset ul li, body main .main-content .people-container ul .personCard .dates {
   -webkit-flex-flow: row nowrap;
   flex-flow: row nowrap; }
 
-body main .main-content .peopleContainer ul > li > .family, body main .main-content .peopleContainer ul .personCard figure {
+body main .main-content .people-container ul > li > .family, body main .main-content .people-container ul .personCard figure {
   -webkit-flex-flow: column wrap;
   flex-flow: column wrap; }
 
-body, body main, body main .main-content .peopleContainer ul .personCard {
+body, body main, body main .main-content .people-container ul .personCard {
   -webkit-flex-flow: column nowrap;
   flex-flow: column nowrap; }
 
-body main .main-content article header, body main .main-content article section, body main .main-content article section .details-container .details-header, body main .main-content .peopleContainer {
+body main .main-content article header, body main .main-content article section, body main .main-content article section .details-container .details-header, body main .main-content .people-container {
   -webkit-flex-direction: row;
   flex-direction: row; }
 
@@ -80,7 +80,7 @@ body main .main-content article, body main .main-content article section .detail
   -webkit-flex-direction: column;
   flex-direction: column; }
 
-body nav, body main .main-content, body main .main-content article section, body main .main-content .formContainer form fieldset ul li, body main .main-content .peopleContainer ul, body main .main-content .peopleContainer ul .personCard .nameContainer {
+body nav, body main .main-content, body main .main-content article section, body main .main-content .form-container form fieldset ul li, body main .main-content .people-container ul, body main .main-content .people-container ul .personCard .nameContainer {
   -webkit-justify-content: space-around;
   justify-content: space-around; }
 
@@ -88,15 +88,15 @@ body nav, body main .main-content, body main .main-content article section, body
   -webkit-justify-content: space-between;
   justify-content: space-between; }
 
-body main .main-content .peopleContainer ul > li > .family, body main .main-content .peopleContainer ul .personCard, body footer {
+body main .main-content .people-container ul > li > .family, body main .main-content .people-container ul .personCard, body footer {
   -webkit-justify-content: center;
   justify-content: center; }
 
-body main .main-content .peopleContainer ul > li > .family, body main .main-content .peopleContainer ul .personCard, body footer {
+body main .main-content .people-container ul > li > .family, body main .main-content .people-container ul .personCard, body footer {
   -webkit-align-items: center;
   align-items: center; }
 
-body, body nav, body main, body main .main-content, body main .main-content article, body main .main-content article header, body main .main-content article section, body main .main-content article section .details-container, body main .main-content article section .details-container .details-header, body main .main-content .peopleContainer ul .personCard .dates {
+body, body nav, body main, body main .main-content, body main .main-content article, body main .main-content article header, body main .main-content article section, body main .main-content article section .details-container, body main .main-content article section .details-container .details-header, body main .main-content .people-container ul .personCard .dates {
   -webkit-align-items: stretch;
   align-items: stretch; }
 
@@ -402,8 +402,7 @@ body {
     body main .main-content {
       -webkit-flex: 8;
       flex: 8;
-      padding: 2rem;
-      border: 1px solid red; }
+      padding: 2rem; }
       body main .main-content #user-interaction {
         display: none; }
       body main .main-content article {
@@ -470,24 +469,24 @@ body {
           -webkit-flex: 1;
           flex: 1;
           text-align: center; }
-      body main .main-content .formContainer {
+      body main .main-content .form-container {
         flex: auto;
         display: none;
         -moz-box-sizing: border-box;
         -webkit-box-sizing: border-box;
         box-sizing: border-box; }
-        body main .main-content .formContainer form {
+        body main .main-content .form-container form {
           -moz-box-sizing: border-box;
           -webkit-box-sizing: border-box;
           box-sizing: border-box; }
-          body main .main-content .formContainer form fieldset {
+          body main .main-content .form-container form fieldset {
             border: 0;
             outline: none; }
-            body main .main-content .formContainer form fieldset legend {
+            body main .main-content .form-container form fieldset legend {
               font-family: SourceSansProSemibold; }
-            body main .main-content .formContainer form fieldset ul {
+            body main .main-content .form-container form fieldset ul {
               list-style: none; }
-              body main .main-content .formContainer form fieldset ul li label {
+              body main .main-content .form-container form fieldset ul li label {
                 -webkit-flex: auto;
                 flex: auto;
                 text-align: right;
@@ -495,35 +494,35 @@ body {
                 -moz-box-sizing: border-box;
                 -webkit-box-sizing: border-box;
                 box-sizing: border-box; }
-              body main .main-content .formContainer form fieldset ul li input {
+              body main .main-content .form-container form fieldset ul li input {
                 -webkit-flex: auto;
                 flex: auto;
                 text-align: left;
                 -moz-box-sizing: border-box;
                 -webkit-box-sizing: border-box;
                 box-sizing: border-box; }
-              body main .main-content .formContainer form fieldset ul li select {
+              body main .main-content .form-container form fieldset ul li select {
                 -webkit-flex: auto;
                 flex: auto; }
-              body main .main-content .formContainer form fieldset ul .formButtonContainer {
+              body main .main-content .form-container form fieldset ul .formButtonContainer {
                 margin-top: 20px;
                 text-align: center; }
-      body main .main-content .peopleContainer {
+      body main .main-content .people-container {
         flex: auto;
         box-sizing: border-box;
         align-items: stretch;
         justify-content: space-evenly; }
-        body main .main-content .peopleContainer > section {
+        body main .main-content .people-container > section {
           width: 99vw;
           flex: none; }
-          body main .main-content .peopleContainer > section > h4 {
+          body main .main-content .people-container > section > h4 {
             text-align: center;
             text-transform: capitalize; }
-        body main .main-content .peopleContainer ul {
+        body main .main-content .people-container ul {
           list-style-image: none;
           list-style-type: none;
           margin-left: 0; }
-          body main .main-content .peopleContainer ul > li {
+          body main .main-content .people-container ul > li {
             -webkit-flex: 1;
             flex: 1;
             -moz-box-sizing: border-box;
@@ -531,15 +530,15 @@ body {
             box-sizing: border-box;
             border: 1px solid #333;
             border-radius: 4px; }
-            body main .main-content .peopleContainer ul > li > .family {
+            body main .main-content .people-container ul > li > .family {
               -webkit-flex: 1;
               flex: 1;
               -moz-box-sizing: border-box;
               -webkit-box-sizing: border-box;
               box-sizing: border-box; }
-          body main .main-content .peopleContainer ul .patriarch, body main .main-content .peopleContainer ul .matriarch {
+          body main .main-content .people-container ul .patriarch, body main .main-content .people-container ul .matriarch {
             min-height: 5vh; }
-          body main .main-content .peopleContainer ul .personCard {
+          body main .main-content .people-container ul .personCard {
             min-height: 150px;
             max-width: 20vw;
             min-width: 20vw;
@@ -548,27 +547,27 @@ body {
             -moz-box-sizing: border-box;
             -webkit-box-sizing: border-box;
             box-sizing: border-box; }
-            body main .main-content .peopleContainer ul .personCard .nameContainer {
+            body main .main-content .people-container ul .personCard .nameContainer {
               -moz-box-sizing: border-box;
               -webkit-box-sizing: border-box;
               box-sizing: border-box;
               -webkit-flex: auto;
               flex: auto; }
-              body main .main-content .peopleContainer ul .personCard .nameContainer .name {
+              body main .main-content .people-container ul .personCard .nameContainer .name {
                 -webkit-flex: 1;
                 flex: 1;
                 font-size: 2rem;
                 padding: 0.5rem;
                 margin: 0; }
-            body main .main-content .peopleContainer ul .personCard figure {
+            body main .main-content .people-container ul .personCard figure {
               -webkit-flex: auto;
               flex: auto;
               -webkit-align-items: center;
               align-items: center; }
-            body main .main-content .peopleContainer ul .personCard figcaption {
+            body main .main-content .people-container ul .personCard figcaption {
               -webkit-flex: auto;
               flex: auto; }
-            body main .main-content .peopleContainer ul .personCard .personImage {
+            body main .main-content .people-container ul .personCard .personImage {
               -webkit-flex: auto;
               flex: auto;
               min-height: 5rem;
@@ -580,12 +579,12 @@ body {
               background-position: center;
               background-repeat: no-repeat;
               background-size: contain; }
-            body main .main-content .peopleContainer ul .personCard .dates {
+            body main .main-content .people-container ul .personCard .dates {
               -webkit-flex: auto;
               flex: auto;
               font-size: 2rem;
               text-align: center; }
-              body main .main-content .peopleContainer ul .personCard .dates > p {
+              body main .main-content .people-container ul .personCard .dates > p {
                 -webkit-flex: 1;
                 flex: 1;
                 margin: 0; }

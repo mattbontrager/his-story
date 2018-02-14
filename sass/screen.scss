@@ -61,7 +61,6 @@ body {
 			@extend %verticalFill;
 			@extend %spaceAround;
 			padding: 2rem;
-			border: 1px solid red;
 			#user-interaction {
 				display: none;
 			}
@@ -138,7 +137,7 @@ body {
 					text-align: center;
 				}
 			}
-			.formContainer {
+			.form-container {
 				flex: auto;
 				display: none;
 				@include box-sizing(border-box);
@@ -178,7 +177,7 @@ body {
 					}
 				}
 			}
-			.peopleContainer {
+			.people-container {
 				flex: auto;
 				box-sizing: border-box;
 				@extend %flexRow;

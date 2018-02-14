@@ -85,161 +85,6 @@ const decode = (str) => {
 	return w.atob(str);
 };
 
-class Person {
-	constructor(sex) {
-		this.id = uuid.v4();
-
-		this.sex = (sex) ? sex: '';
-
-		this.relationships = {
-			family: {
-				id: '',
-				parents: {
-					father: {},
-					mother: {}
-				},
-				spouse: {},
-				siblings: {
-					brothers: [],
-					sisters: [],
-					unknown: [],
-				},
-				spouses: [],
-				children: {
-					sons: [],
-					daughters: [],
-					unknown: []
-				}
-			},
-			friends: []
-		};
-
-		this.name = {
-			salutation: '',
-			first: '',
-			middle: '',
-			last: {
-				given: '',
-				married: '',
-				maiden: ''
-			},
-			nickname: '',
-			preferred_name: '',
-			suffix: ''
-		};
-
-		this.race = '';
-
-		this.birth = {
-			date: '',
-			location: ''
-		};
-		this.death = {
-			date: '',
-			location: '',
-			cause: ''
-		};
-
-		this.height = {
-			feet: 0,
-			inches: 0
-		};
-
-		this.weight = {
-			pounds: 0,
-			ounces: 0
-		};
-
-		this.attributes = {
-			hair: {
-				color: ''
-			},
-			eyes: {
-				color: ''
-			},
-			handed: '' // left, right, or ambidexterous
-		};
-	}
-
-	get spouse() {
-		log('in get spouse', this.relationships.family.spouse);
-		return (checkObjectLength(this.relationships.family.spouse) > 0) ? this.relationships.family.spouse: false;
-	}
-
-	set spouse(thespouse) {
-		!thespouse && logER('no spouse passed to set spouse');
-		log('in set spouse with', thespouse);
-		this.relationships.family.spouse = thespouse;
-	}
-
-	get children() {
-		let childs = this.relationships.family.children;
-		let hasChildren = ((childs.sons.length) || (childs.daughters.length) || (childs.unknown.length)) ? true: false;
-
-		!!hasChildren && log('in get children', this.relationships.family.children);
-		return (hasChildren) ? this.relationships.family.children: false;
-	}
-
-	set children(childObj) {
-		!childObj && logER('no child passed to set children');
-		log('in set children with', childObj);
-		this.relationships.family.children[childObj.type].push(childObj.child);
-	}
-
-	get siblings() {
-		let sibs = this.relationships.family.siblings;
-		let haveSiblings = (sibs.brothers.length || sibs.sisters.length || sibs.unknown.length) ? true: false;
-		if (haveSiblings) {
-			log('in get siblings', sibs);
-		}
-		return (haveSiblings) ? sibs: false;
-	}
-
-	set siblings(sibObj) {
-		!sibObj && logER('no sibling passed to set siblings');
-		log('setting a ' + sibObj.type + ' sibling', sibObj.sibling);
-		this.relationships.family.siblings[sibObj.type].push(sibObj.sibling);
-	}
-
-	get parents() {
-		log('getting parents', this.relationships.family.parents);
-		return this.relationships.family.parents;
-	}
-
-	set parents(rents) {
-		let p = this.relationships.family.parents;
-		p.father = rents.father;
-		p.mother = rents.mother;
-		log('set parents', p);
-	}
-
-	get grandparents() {
-		/**
-		 * paternal grandparents
-		 * @type {Array}
-		 */
-		let pgps = [];
-		/**
-		 * maternal grandparents
-		 * @type {Array}
-		 */
-		let mgps = [];
-
-		/**
-		 * TODO: finish this
-		 */
-	}
-
-	set grandparents(gps) {
-		log('in set grandparents', gps);
-		let pgps = gps.pgps;
-		let mgms = gps.mgms;
-		/**
-		 * TODO: write this
-		 */
-	}
-}
-
 const People = [];
 
 const App = (() => {
@@ -253,14 +98,15 @@ const App = (() => {
 
 	let self;
 
-	const $fc = $('.formContainer');
+	const $fc = $('.form-container');
+	const $pc = $('.people-container');
 
 	const postTheForm = (fd) => {
 		if (!fd) {
 			logER('no form data was passed to postTheForm');
 			return false;
 		}
-		return $.post('http://127.0.0.1:3000/people', fd).done(response => {
+		return $.post('http://127.0.0.1:3000/people/new', fd).done(response => {
 			log('back from post', response);
 			return response;
 		}).fail(err => {
@@ -292,7 +138,7 @@ const App = (() => {
 				$sexVal = $sexElem.val(),
 				theSex = $sexVal === 'm' ? 'male': 'female',
 				clearForm = function clearForm() {
-					$('.formContainer').fadeOut().css('background-color', 'inherit').empty();
+					$fc.fadeOut().css('background-color', 'inherit').empty();
 				},
 				fn = ($('#first_name').val()) ? $('#first_name').val().trim(): '',
 				mn = ($('#middle_name').val()) ? $('#middle_name').val().trim(): '',
@@ -425,14 +271,56 @@ const App = (() => {
 
 			handleIntercourse(father_id, mother_id);
 
-			if ($('.formContainer').is(':hidden')) {
-				$('.formContainer').fadeIn().promise().done(function() {
+			if ($fc.is(':hidden')) {
+				$fc.fadeIn().promise().done(function() {
 					$('form').find('input').first().focus();
 				});
 			}
 		});
 
+		$people.off('click', '.personCard').on('click', '.personCard', function(e) {
+			e.preventDefault();
+			e.stopPropagation();
+			let $me = $(e.target).is('.personCard') ? $(e.target): $(e.target).closest('.personCard');
+			let pid = $me.attr('id');
+			console.log('in personCard click. personid: ', $me.attr('id'));
+			viewPerson(pid);
+		});
+
 		formBindings();
+	};
+
+	const goGetDetailedInfo = (pid) => {
+		return $.getJSON(`http://127.0.0.1:3000/people/view/${pid}`).done(function(json) {
+			return json;
+		}).fail(function(err) {
+			logER('error getting detailed information: ', err);
+			return false;
+		});
+	};
+
+	async function getDetailedInfo(pid) {
+		const detailedPersonalInformation = await goGetDetailedInfo(pid);
+		return new Promise((resolve, reject) => {
+			if (detailedPersonalInformation === false) {
+				reject();
+			} else {
+				resolve(detailedPersonalInformation);
+			}
+		});
+	}
+
+	const changeViews = (person) => {
+		!!development && console.log('in changeViews');
+	};
+
+	const viewPerson = (pid) => {
+		getDetailedInfo(pid).then(personInfo => {
+			!!development && console.log('personInfo: ', personInfo);
+			changeViews(personInfo);
+		}).catch(err => {
+			logER('failed in viewPerson');
+		})
 	};
 
 	const marryThem = (father, mother) => {
@@ -593,23 +481,27 @@ const App = (() => {
 
 		log('in addPersonToDom', person);
 
-		let isMale = (person.sex === 'male') ? true: false;
+		let isMale = person.sex === 'male';
 		let theImage = (isMale) ? 'male': 'female';
 		let draggable = (isMale) ? "true": "false";
 		let classToAssign = 'personCard ' + theImage;
 		let thebday = (person.birth && person.birth.date) ? moment(person.birth.date): null;
 		let bday = (thebday) ? thebday.format("MMM Do, YYYY"): null;
+		!!development && console.warn('bday: ', bday);
 		let age = (bday) ? thebday.fromNow(true): null;
-		let thelastName = (function() {
-			if (isMale) {
-				return person.name.last.given;
-			} else {
-				log('married name', person.name.last.married);
-				return (person.sex === 'female' && person.name.last.married && person.name.last.married.length) ? person.name.last.married: person.name.last.given;
-			}
-		}());
+		// let thelastName = (function() {
+		// 	if (isMale) {
+		// 		return person.name.last.given;
+		// 	} else {
+		// 		log('married name', person.name.last.married);
+		// 		return (person.sex === 'female' && person.name.last.married && person.name.last.married.length) ? person.name.last.married: person.name.last.given;
+		// 	}
+		// }());
+		let thelastName = person.name.lastname;
 		let data = {
-			elemID: person.id,
+			id: person._id,
+			"data-id": person._id,
+			elemID: person._id,
 			theClass: classToAssign,
 			isDraggable: draggable,
 			firstName: person.name.first,
@@ -635,6 +527,14 @@ const App = (() => {
 		if ($people.is(':hidden')) {
 			$people.show();
 		}
+
+		if ($('.people-section').hasClass('hidden')) {
+			$('.people-section').removeClass('hidden');
+		}
+
+		if ($pc.hasClass('hidden')) {
+			$pc.removeClass('hidden');
+		}
 	};
 
 	async function getAllPeople() {
@@ -651,9 +551,6 @@ const App = (() => {
 	return {
 		init: function() {
 			self = (!self) ? this: self;
-
-			$('.people-section').hide();
-			$('.family-section').hide();
 
 			getAllPeople().then((peeps) => {
 				log('in getAllPeopleSuccess');
