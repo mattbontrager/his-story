@@ -1,0 +1,25 @@
+<!-- Book template -->
+<template id="book-template">
+	<article data-template-bind='[
+		{"attribute": "data-id", "value": "elemID"},
+		{"attribute": "class", "value": "theClass"}
+	]'>
+		<ul class="book-nav">
+			<li>
+				<select name="chapter-selection" id="jump-to-chapter">
+					<option value="1">1</option>
+				</select>
+			</li>
+			<li>
+				<input type="search" />
+			</li>
+		</ul>
+		<header>
+			<h1 class="book-title" data-content-text=bookTitle></h1>
+		</header>
+		<section class="book-chapter" data-content-text="bookChapter"></section>
+		<footer>
+			<p>book footer</p>
+		</footer>
+	</article>
+</template>

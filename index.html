@@ -12,25 +12,30 @@
 			<!-- <h1>His Story Header</h1> -->
 		</header>
 		<nav class="app-nav">
-			<button class="createNewMale" data-method="create" data-item="male">New Male</button>
-			<button class="createNewFemale" data-method="create" data-item="female">New Female</button>
+			<button data-target="View" data-method="show" data-item="books-container">Books</button>
+			<button data-target="View" data-method="show" data-item="people-container">People</button>
 		</nav>
 		<main>
-			<nav class="main-nav">
-				<button data-method="reveal" data-element="people-section">People</button>
-				<button data-method="reveal" data-element="family-section">Families</button>
-			</nav>
-			<div class="main-content">
-				<div class="form-container hidden"></div>
-				<div class="people-container hidden">
-					<section class="family-section hidden">
-						<h4>families</h4>
-						<ul id="families"></ul>
-					</section>
-					<section class="people-section hidden">
-						<h4>people</h4>
-						<ul id="people"></ul>
-					</section>
+			<div id="books-container"></div>
+			<div id="people-container">
+				<nav class="main-nav">
+					<button class="createNewMale" data-method="create" data-item="male">New Male</button>
+					<button class="createNewFemale" data-method="create" data-item="female">New Female</button>
+					<button data-method="view" data-element="people-section">People</button>
+					<button data-method="view" data-element="family-section">Families</button>
+				</nav>
+				<div class="main-content">
+					<div class="form-container hidden"></div>
+					<div class="people-container hidden">
+						<section class="family-section hidden">
+							<h4>families</h4>
+							<ul id="families"></ul>
+						</section>
+						<section class="people-section hidden">
+							<h4>people</h4>
+							<ul id="people"></ul>
+						</section>
+					</div>
 				</div>
 			</div>
 		</main>
@@ -184,6 +189,7 @@
 				</div>
 			</li>
 		</template>
+
 		<script src="js/uuid.js"></script>
 		<script src="js/hexify.js"></script>
 		<script src="js/modernizr-custom.js"></script>

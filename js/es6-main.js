@@ -212,18 +212,20 @@ const App = (() => {
 			e.preventDefault();
 			e.stopPropagation();
 			let $me = $(e.target);
+			let target = $me.data('target');
 			let method = $me.data('method');
-			let element;
-			let item;
+			let item = $me.data('item');
 
-			if (method === 'create') {
-				item = $me.data('item');
-				log('item', item);
-				createItem(item);
-			} else if (method === 'reveal') {
-				element = $me.data('element');
-				revealElement(element);
-			}
+			App[target][method](item);
+
+			// if (method === 'create') {
+			// 	item = $me.data('item');
+			// 	log('item', item);
+			// 	createItem(item);
+			// } else if (method === 'reveal') {
+			// 	element = $me.data('element');
+			// 	revealElement(element);
+			// }
 		});
 
 		$people.off('dragstart', '.male').on('dragstart', '.male', function(e) {
@@ -424,6 +426,14 @@ const App = (() => {
 		}, {success: formBindings});
 	};
 
+	const addBook = (book) => {
+		!!development && console.log('book: ', book);
+		$('#books-container').loadTemplate('tpl/book.html', {
+			bookTitle: book.title,
+			bookChapter: book.chapters[0]
+		}, {success: formBindings});
+	};
+
 	const handleIntercourse = (fatherID, motherID) => {
 		log('in handleIntercourse');
 		if (!fatherID && !motherID) {
@@ -572,6 +582,30 @@ const App = (() => {
 			}, (err) => {
 				logER('in getAllPeopleFailure', err);
 			});
+		},
+		View: {
+			show: (item) => {
+				const $item = $('#' + item);
+				const $sibs = $item.siblings();
+				$sibs.hide();
+
+				if (item === 'books-container') {
+					$.getJSON('http://127.0.0.1:3000/books/view/genesis').done(book => {
+						log('book: ', book);
+						$('#books-container').loadTemplate('tpl/book.html', {
+							bookTitle: book.title,
+							bookChapter: book.chapters[0]
+						}, {success: formBindings});
+
+						// addBook(book); // right here
+						$item.show();
+					}).fail(err => {
+						logER('failed to get json book', err);
+					});
+				} else {
+					$item.show();
+				}
+			}
 		},
 		es6init: function() {
 			w.App = self;
