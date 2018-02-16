@@ -115,7 +115,7 @@ const App = (() => {
 			logER('failed back from post', err);
 			return err;
 		});
-	}
+	};
 
 	async function submitForm(formData) {
 		const formSubmission = await postTheForm(formData);
@@ -542,8 +542,11 @@ const App = (() => {
 	}
 
 	return {
+		hasWorker: false,
 		init: function() {
 			self = (!self) ? this: self;
+
+			self.hasWorker = (!!window.Worker) ? true: false;
 
 			getAllPeople().then((peeps) => {
 				log('in getAllPeopleSuccess');
@@ -560,11 +563,260 @@ const App = (() => {
 					window.People = People;
 				}
 
-				// self.es6init();
-
 			}, (err) => {
 				logER('in getAllPeopleFailure', err);
 			});
+		},
+		BookView: {
+			allBooksDownloaded: false,
+			isBookListPopulated: false,
+			item: null,
+			currentChapters: [],
+			getBook: (bookname) => {
+				const storedBook = self.BookView.checkIfBookIsThere(`${bookname}`);
+				if (!storedBook) {
+					$.getJSON('http://127.0.0.1:3000/books/view/genesis').done(book => {
+						self.BookView.storeBookLocally(book);
+						$('#books-container').loadTemplate('tpl/book.html', {
+							bookTitle: book.name
+						}, {success: self.BookView.prepareBook(book)});
+					}).fail(err => {
+						logER('failed to get json book', err);
+					});
+				} else {
+					const book = JSON.parse(storedBook);
+					!!development && console.log('book: ', book);
+					$('#books-container').loadTemplate('tpl/book.html', {
+						bookTitle: book.name
+					}, {success: self.BookView.prepareBook(book)});
+				}
+				!!self.hasWorker && !self.BookView.allBooksDownloaded && self.BookView.startRemoteDownloads();
+			},
+			init: (_item) => {
+				self.BookView.item = $('#' + _item);
+				self.BookView.checkIfAllBooksAreDownloaded().then(self.BookView.getBook('genesis'));
+				// self.BookView.reProcessBookObject();
+			},
+			checkIfAllBooksAreDownloaded: () => {
+				return new Promise((resolve, reject) => {
+					const allBooksLocal = JSON.parse(localStorage.getItem('his-story-titles-of-stored-books'));
+					if (allBooksLocal.length === 0) {
+						resolve();
+					} else if (allBooksLocal.length < 65) {
+						resolve();
+						// reject(allBooksLocal.length);
+					} else if (allBooksLocal.length === 65) {
+						self.BookView.allBooksDownloaded = true;
+						resolve();
+					} else 	if (allBooksLocal.length === null) {
+						localStorage.setItem('his-story-titles-of-stored-books', JSON.stringify([]));
+						// reject();
+						resolve();
+					}
+				});
+			},
+			populateBookList: (names) => {
+				const $jumpBook = $('#jump-to-book');
+				const bookNameArr = [];
+				for (let name of names) {
+					bookNameArr.push(self.BookView.bookNameFactory(name.name));
+				}
+				$jumpBook.empty().append(bookNameArr.join(''));
+				self.BookView.isBookListPopulated = true;
+			},
+			startRemoteDownloads: () => {
+				!!development && console.log('in startRemoteDownloads');
+				var remoteD = new Worker('js/getBible.js');
+
+				remoteD.addEventListener('message', function(e) {
+					if (e.data.yourbookhasarrived) {
+						!!development && console.log("e.data.yourbookhasarrived: ", e.data.yourbookhasarrived);
+						self.BookView.storeBookLocally(e.data.yourbookhasarrived);
+					}
+
+					if (e.data.thetime) {
+						self.setTime(e.data.thetime);
+					}
+					if (e.data.msg) {
+						!!development && console.log('remoteD said: ', e.data.msg);
+					}
+				}, false);
+
+				remoteD.postMessage({"cmd": "start"});
+			},
+			optionFactory: (num) => {
+				return `<option class="jump-to-chapter-number" value="${num}">${num}</option>`;
+			},
+			verseFactory: (verse) => {
+				return `<p class="verse">${verse}</p>`;
+			},
+			bookNameFactory: (name) => {
+				return `<option class="jump-to-book-option" value="${name}">${name}</option>`;
+			},
+			bookBindings: () => {
+				log('in bookBindings');
+
+				$('.book-chapter').off('scroll').on('scroll', function(e) {
+					if ($('.book-template').find('p').first().offset().top < 60 && $('.book-title').css('font-size') === "70px") {
+						$('.book-title').css({
+							'font-size': '2rem',
+							'color': '#e0e0e0'
+						});
+						$(this).css('margin-top', '0');
+						$(this).css({
+							'margin-top': '0',
+							'height': '95vh',
+							'max-height': '95vh'
+						});
+					}
+					if ($('.book-template').find('p').first().offset().top === 0 && $('.book-title').css('font-size') === "20px") {
+						$('.book-title').css({
+							'font-size': '7rem',
+							'color': 'initial'
+						});
+						$(this).css({
+							'margin-top': '10rem',
+							'height': '85vh',
+							'max-height': '85vh'
+						});
+					}
+				});
+
+				$('button').off('click').on('click', function(e) {
+					e.preventDefault();
+					e.stopPropagation();
+					let $me = $(e.target);
+					let target = $me.data('target');
+					let method = $me.data('method');
+					let item = $me.data('item');
+
+					App[target][method](item);
+				});
+			},
+			switchBooks: (book) => {
+				let optionI = 0;
+				const options = [];
+				const verses = book.chapters[0];``
+				const verseArr = [];
+
+				self.BookView.currentChapters = book.chapters;
+
+				for (let verse of verses) {
+					verseArr.push(self.BookView.verseFactory(verse));
+				}
+				for (let chapter of book.chapters) {
+					optionI++;
+					options.push(self.BookView.optionFactory(optionI));
+				}
+
+				$('.book-title').empty().text(`${book.name}`);
+				$('.book-chapter').empty().append(verseArr.join(''));
+				$('#jump-to-chapter').empty().append(options.join(''));
+			},
+			switchChapters: (chapterNumber) => {
+				const verses = self.BookView.currentChapters[chapterNumber];
+				const verseArr = [];
+
+				for (let verse of verses) {
+					verseArr.push(self.BookView.verseFactory(verse));
+				}
+
+				$('.book-chapter').empty().append(verseArr.join(''));
+			},
+			handleChapterChange: () => {
+				$('#jump-to-chapter').off('change').on('change', function(e) {
+					e.stopPropagation();
+					let $me = $(e.target);
+					let val = $me.val();
+					!!development && console.log('val: ', val);
+					let selectedChapter = val - 1;
+					self.BookView.switchChapters(selectedChapter);
+				});
+			},
+			prepareBook: (book) => {
+				let optionI = 0;
+				const options = [];
+				const verses = book.chapters[0];
+				const verseArr = [];
+
+				self.BookView.currentChapters = book.chapters;
+
+				$('.app-nav').hide();
+				$('.site-nav').show();
+
+				self.BookView.item.show();
+				$('.site-nav-button').fadeIn();
+
+				setTimeout(function() {
+					for (let verse of verses) {
+						verseArr.push(self.BookView.verseFactory(verse));
+					}
+					for (let chapter of book.chapters) {
+						optionI++;
+						options.push(self.BookView.optionFactory(optionI));
+					}
+					$('.book-chapter').empty().append(verseArr.join(''));
+					$('#jump-to-chapter').empty().append(options.join(''));
+					self.BookView.bookBindings();
+					if (!self.BookView.isBookListPopulated) {
+						const listOfNames = JSON.parse(localStorage.getItem('his-story-titles-of-stored-books'));
+						const orderedNames = listOfNames.sort((a, b) => {
+							if (parseInt(a.id, 10) < parseInt(b.id, 10)) return -1;
+							if (parseInt(a.id, 10) > parseInt(b.id, 10)) return 1;
+							return 0;
+						});
+						self.BookView.populateBookList(orderedNames);
+						self.BookView.handleBookChange();
+						self.BookView.handleChapterChange();
+					}
+				}, 100);
+			},
+			handleBookChange: () => {
+				$('#jump-to-book').off('change').on('change', function(e) {
+					e.stopPropagation();
+					const $me = $(e.target);
+					const bookname = $me.val();
+					const theBook = JSON.parse(localStorage.getItem(`${bookname}`));
+
+					!!development && console.log('selected book name: ', bookname);
+					!!development && console.log('theBook: ', theBook);
+					self.BookView.switchBooks(theBook);
+				});
+			},
+			checkIfBookIsThere: (bookname) => {
+				return localStorage.getItem(bookname);
+			},
+			reProcessBookObject: () => {
+				const booknames = ['genesis', 'exodus', 'leviticus', 'numbers', 'deuteronomy', 'joshua', 'judges', 'ruth', '1 samuel', '2 samuel', '1 kings', '2 kings', '1 chronicles', '2 chronicles', 'ezra', 'nehemiah', 'esther', 'job', 'psalms', 'proverbs', 'ecclesiastes', 'song of solomon', 'isaiah', 'jeremiah', 'lamentations', 'ezekiel', 'daniel', 'hosea', 'joel', 'amos', 'obadiah', 'jonah', 'micah', 'nahum', 'habakkuk', 'zephaniah', 'haggai', 'zechariah', 'malachi', 'matthew', 'mark', 'luke', 'john', 'acts', 'romans', '1 corinthians', '2 corinthians', 'galatians', 'ephesians', 'philippians', 'colossians', '1 thessalonians', '2 thessalonians', '1 timothy', '2 timothy', 'titus', 'philemon', 'hebrews', 'james', '1 peter', '2 peter', '1 john', '2 john', '3 john', 'jude', 'revelation'];
+
+				const bookArr = [];
+				for (let name of booknames) {
+					!!development && console.log('name: ', name);
+						let bookObj = JSON.parse(localStorage.getItem(`${name}`));
+						if (bookObj) {
+							bookArr.push({
+								id: `${bookObj.id}`,
+								name: `${bookObj.name}`
+							});
+						}
+				}
+				!!development && console.log('bookArr: ', bookArr);
+				localStorage.setItem('his-story-titles-of-stored-books', JSON.stringify(bookArr));
+			},
+			storeBookLocally: (book) => {
+				!!development && console.log('in storeBookLocally' + ' with: ', book);
+				localStorage.setItem(`${book.name}`, JSON.stringify(book));
+				const allBooksLocal = JSON.parse(localStorage.getItem('his-story-titles-of-stored-books'));
+				if (Array.isArray(allBooksLocal)) {
+					!!development && console.log('allBooksLocal before: ', allBooksLocal);
+					allBooksLocal.push({
+						id: `${book.id}`,
+						name: `${book.name}`
+					});
+					!!development && console.log('allBooksLocal after: ', allBooksLocal);
+				}
+				localStorage.setItem('his-story-titles-of-stored-books', JSON.stringify(allBooksLocal));
+			}
 		},
 		View: {
 			show: (item) => {
@@ -573,109 +825,8 @@ const App = (() => {
 
 				$sibs.hide();
 
-				const optionFactory = (num) => {
-					return `<option class="jump-to-chapter-number" value="${num}">${num}</option>`;
-				};
-
-				const verseFactory = (verse) => {
-					return `<p class="verse">${verse}</p>`;
-				};
-
-				const bookBindings = () => {
-					log('in bookBindings');
-					const $firstP = $('.book-template').find('p').first();
-
-					$('.book-chapter').off('scroll').on('scroll', function(e) {
-						if ($firstP.offset().top < 60 && $('.book-title').css('font-size') === "70px") {
-							$('.book-title').css({
-								'font-size': '2rem',
-								'color': '#e0e0e0'
-							});
-							$(this).css('margin-top', '0');
-							$(this).css({
-								'margin-top': '0',
-								'height': '95vh',
-								'max-height': '95vh'
-							});
-						}
-						if ($firstP.offset().top === 0 && $('.book-title').css('font-size') === "20px") {
-							$('.book-title').css({
-								'font-size': '7rem',
-								'color': 'initial'
-							});
-							$(this).css({
-								'margin-top': '10rem',
-								'height': '85vh',
-								'max-height': '85vh'
-							});
-						}
-					});
-
-					$('button').off('click').on('click', function(e) {
-						e.preventDefault();
-						e.stopPropagation();
-						let $me = $(e.target);
-						let target = $me.data('target');
-						let method = $me.data('method');
-						let item = $me.data('item');
-
-						App[target][method](item);
-					});
-				};
-
-				function prepareBook(book) {
-					let optionI = 0;
-					const options = [];
-					const verses = book.chapters[0];
-					const verseArr = [];
-
-					$('.app-nav').hide();
-					$('.site-nav').show();
-
-					$item.show();
-					$('.site-nav-button').fadeIn();
-
-					setTimeout(function() {
-						for (let verse of verses) {
-							verseArr.push(verseFactory(verse));
-						}
-						for (let chapter of book.chapters) {
-							optionI++;
-							options.push(optionFactory(optionI));
-						}
-						$('.book-chapter').empty().append(verseArr.join(''));
-						$('#jump-to-chapter').empty().append(options.join(''));
-						bookBindings();
-					}, 100);
-				}
-
-				function checkIfBookIsThere(bookname) {
-					return localStorage.getItem(bookname);
-				}
-
-				function storeBookLocally(book) {
-					!!development && console.log('in storeBookLocally' + ' with: ', book);
-					localStorage.setItem(`${book.name}`, JSON.stringify(book));
-				}
-
 				if (item === 'books-container') {
-					const storedBook = checkIfBookIsThere('genesis');
-					if (!storedBook) {
-						$.getJSON('http://127.0.0.1:3000/books/view/genesis').done(book => {
-							storeBookLocally(book);
-							$('#books-container').loadTemplate('tpl/book.html', {
-								bookTitle: book.name
-							}, {success: prepareBook(book)});
-						}).fail(err => {
-							logER('failed to get json book', err);
-						});
-					} else {
-						const book = JSON.parse(storedBook);
-						!!development && console.log('book: ', book);
-						$('#books-container').loadTemplate('tpl/book.html', {
-							bookTitle: book.name
-						}, {success: prepareBook(book)});
-					}
+					self.BookView.init(item);
 				} else {
 					$item.show();
 					$('.site-nav-button').hide();

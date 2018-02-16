@@ -29,6 +29,9 @@ body {
 	@extend %flexColumnNoWrap;
 	@extend %verticalFill;
 	@include box-sizing(border-box);
+	::-webkit-scrollbar {
+		display: none;
+	}
 	.hidden {
 		display: none;
 	}
@@ -380,6 +383,9 @@ button {
 	@extend %flexColumn;
 	align-items: stretch;
 	justify-content: center;
+	::-webkit-scrollbar {
+		display: none;
+	}
 	> header {
 		position: fixed;
 		top: 0;
@@ -391,6 +397,9 @@ button {
 		align-items: flex-end;
 		justify-content: space-between;
 		background-color: rgba(250, 250, 250, 0.75);
+		#jump-to-book {
+			text-transform: capitalize;
+		}
 		.book-search {
 			input[type="search"] {
 				outline: none;
@@ -404,6 +413,9 @@ button {
 
 	}
 	.book-chapter {
+		::-webkit-scrollbar {
+			display: none;
+		}
 		transition: all 0.75s ease;
 		height: 85vh;
 		max-height: 85vh;
