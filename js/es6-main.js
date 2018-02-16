@@ -10,6 +10,8 @@
 
 'use strict';
 
+$('.site-nav-button').hide();
+
 const development = true;
 
 const w = window;
@@ -217,15 +219,6 @@ const App = (() => {
 			let item = $me.data('item');
 
 			App[target][method](item);
-
-			// if (method === 'create') {
-			// 	item = $me.data('item');
-			// 	log('item', item);
-			// 	createItem(item);
-			// } else if (method === 'reveal') {
-			// 	element = $me.data('element');
-			// 	revealElement(element);
-			// }
 		});
 
 		$people.off('dragstart', '.male').on('dragstart', '.male', function(e) {
@@ -457,8 +450,6 @@ const App = (() => {
 			parents = marryThem(father, mother);
 
 			if (checkObjectLength(parents) > 0) {
-				// var ppl = [parents.father, parents.mother];
-				// updateLocalPeople(ppl);
 				addChildForm(parents);
 			} else {
 				logER('unable to marry the parents', parents);
@@ -499,14 +490,6 @@ const App = (() => {
 		let bday = (thebday) ? thebday.format("MMM Do, YYYY"): null;
 		!!development && console.warn('bday: ', bday);
 		let age = (bday) ? thebday.fromNow(true): null;
-		// let thelastName = (function() {
-		// 	if (isMale) {
-		// 		return person.name.last.given;
-		// 	} else {
-		// 		log('married name', person.name.last.married);
-		// 		return (person.sex === 'female' && person.name.last.married && person.name.last.married.length) ? person.name.last.married: person.name.last.given;
-		// 	}
-		// }());
 		let thelastName = person.name.lastname;
 		let data = {
 			id: person._id,
@@ -587,23 +570,116 @@ const App = (() => {
 			show: (item) => {
 				const $item = $('#' + item);
 				const $sibs = $item.siblings();
+
 				$sibs.hide();
 
-				if (item === 'books-container') {
-					$.getJSON('http://127.0.0.1:3000/books/view/genesis').done(book => {
-						log('book: ', book);
-						$('#books-container').loadTemplate('tpl/book.html', {
-							bookTitle: book.title,
-							bookChapter: book.chapters[0]
-						}, {success: formBindings});
+				const optionFactory = (num) => {
+					return `<option class="jump-to-chapter-number" value="${num}">${num}</option>`;
+				};
 
-						// addBook(book); // right here
-						$item.show();
-					}).fail(err => {
-						logER('failed to get json book', err);
+				const verseFactory = (verse) => {
+					return `<p class="verse">${verse}</p>`;
+				};
+
+				const bookBindings = () => {
+					log('in bookBindings');
+					const $firstP = $('.book-template').find('p').first();
+
+					$('.book-chapter').off('scroll').on('scroll', function(e) {
+						if ($firstP.offset().top < 60 && $('.book-title').css('font-size') === "70px") {
+							$('.book-title').css({
+								'font-size': '2rem',
+								'color': '#e0e0e0'
+							});
+							$(this).css('margin-top', '0');
+							$(this).css({
+								'margin-top': '0',
+								'height': '95vh',
+								'max-height': '95vh'
+							});
+						}
+						if ($firstP.offset().top === 0 && $('.book-title').css('font-size') === "20px") {
+							$('.book-title').css({
+								'font-size': '7rem',
+								'color': 'initial'
+							});
+							$(this).css({
+								'margin-top': '10rem',
+								'height': '85vh',
+								'max-height': '85vh'
+							});
+						}
 					});
+
+					$('button').off('click').on('click', function(e) {
+						e.preventDefault();
+						e.stopPropagation();
+						let $me = $(e.target);
+						let target = $me.data('target');
+						let method = $me.data('method');
+						let item = $me.data('item');
+
+						App[target][method](item);
+					});
+				};
+
+				function prepareBook(book) {
+					let optionI = 0;
+					const options = [];
+					const verses = book.chapters[0];
+					const verseArr = [];
+
+					$('.app-nav').hide();
+					$('.site-nav').show();
+
+					$item.show();
+					$('.site-nav-button').fadeIn();
+
+					setTimeout(function() {
+						for (let verse of verses) {
+							verseArr.push(verseFactory(verse));
+						}
+						for (let chapter of book.chapters) {
+							optionI++;
+							options.push(optionFactory(optionI));
+						}
+						$('.book-chapter').empty().append(verseArr.join(''));
+						$('#jump-to-chapter').empty().append(options.join(''));
+						bookBindings();
+					}, 100);
+				}
+
+				function checkIfBookIsThere(bookname) {
+					return localStorage.getItem(bookname);
+				}
+
+				function storeBookLocally(book) {
+					!!development && console.log('in storeBookLocally' + ' with: ', book);
+					localStorage.setItem(`${book.name}`, JSON.stringify(book));
+				}
+
+				if (item === 'books-container') {
+					const storedBook = checkIfBookIsThere('genesis');
+					if (!storedBook) {
+						$.getJSON('http://127.0.0.1:3000/books/view/genesis').done(book => {
+							storeBookLocally(book);
+							$('#books-container').loadTemplate('tpl/book.html', {
+								bookTitle: book.name
+							}, {success: prepareBook(book)});
+						}).fail(err => {
+							logER('failed to get json book', err);
+						});
+					} else {
+						const book = JSON.parse(storedBook);
+						!!development && console.log('book: ', book);
+						$('#books-container').loadTemplate('tpl/book.html', {
+							bookTitle: book.name
+						}, {success: prepareBook(book)});
+					}
 				} else {
 					$item.show();
+					$('.site-nav-button').hide();
+					$('.app-nav').show();
 				}
 			}
 		},

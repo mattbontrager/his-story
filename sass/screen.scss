@@ -17,9 +17,12 @@ html {font-size: 10px;}
 html, body {
 	height: 100vh;
 	width: 100vw;
+	max-height: 100vh;
+	max-width: 100vw;
 	margin: 0;
 	padding: 0;
 	-webkit-text-size-adjust: 100%;
+	overflow: hidden;
 }
 
 body {
@@ -278,6 +281,18 @@ body {
 		@extend %flexColumn;
 		@extend %absoluteCenter;
 	}
+
+	> footer {
+		flex: 0.5;
+		> a:last-of-type, small {
+			display: inline-block;
+		}
+		.site-nav-button {
+			position: absolute;
+			bottom: 0.25rem;
+			left: 0.25rem;
+		}
+	}
 }
 
 ol {
@@ -310,9 +325,10 @@ ol {
 				content: counter(li);
 				counter-increment: li;
 				position: absolute;
-				left: -0.75rem;
+				left: -0.25rem;
 				top: 50%;
 				margin-top: -1.3em;
+				margin-left: 0.25rem;
 				background: $Blue;
 				height: 2em;
 				width: 2em;
@@ -358,4 +374,69 @@ button {
 
 .birthDate {
 	width: 100%;
+}
+
+.book-template {
+	@extend %flexColumn;
+	align-items: stretch;
+	justify-content: center;
+	> header {
+		position: fixed;
+		top: 0;
+		left: 0;
+		right: 0;
+		@include box-sizing(border-box);
+		padding: 0 0.5rem 0.5rem;
+		@extend %flexRow;
+		align-items: flex-end;
+		justify-content: space-between;
+		background-color: rgba(250, 250, 250, 0.75);
+		.book-search {
+			input[type="search"] {
+				outline: none;
+			}
+		}
+		.book-title {
+			text-transform: capitalize;
+			flex: 5;
+			transition: all 0.5s ease;
+		}
+
+	}
+	.book-chapter {
+		transition: all 0.75s ease;
+		height: 85vh;
+		max-height: 85vh;
+		overflow: scroll;
+		font-size: 2rem;
+		width: 98vw;
+		margin: 10rem auto 0;
+		counter-reset: p; // Initiate a counter */
+		@include box-sizing(border-box);
+		> p {
+			position: relative;
+			@include box-sizing(border-box);
+			padding-left: 1rem;
+			&:before {
+				position: absolute;
+				content: counter(p);
+				counter-increment: p;
+				left: -0.25rem;
+				height: 2.5rem;
+				font-weight: bold;
+				font-size: 1rem;
+				margin-left: 0.25rem;
+				// top: -0.5rem;
+			}
+		}
+	}
+}
+
+
+select {
+	outline: none;
+}
+
+a {
+	color: inherit;
 }

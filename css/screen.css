@@ -52,7 +52,7 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
     .disappearLargeMedia {
       display: none; } }
 
-.flex-parent, body main .main-content .people-container ul, body main .main-content .people-container ul .personCard .nameContainer, body nav, body main .main-content, body main .main-content .form-container form fieldset ul li, body main .main-content .people-container ul .personCard .dates, body main .main-content .people-container ul > li > .family, body main .main-content .people-container ul .personCard figure, body, body main, body main .main-content .people-container ul .personCard, body main .main-content article header, body main .main-content article section, body main .main-content article section .details-container .details-header, body main .main-content .people-container, body main .main-content article, body main .main-content article section .details-container, body footer {
+.flex-parent, body main .main-content .people-container ul, body main .main-content .people-container ul .personCard .nameContainer, body nav, body main .main-content, body main .main-content .form-container form fieldset ul li, body main .main-content .people-container ul .personCard .dates, body main .main-content .people-container ul > li > .family, body main .main-content .people-container ul .personCard figure, body, body main, body main .main-content .people-container ul .personCard, body main .main-content article header, body main .main-content article section, body main .main-content article section .details-container .details-header, body main .main-content .people-container, .book-template > header, body main .main-content article, body main .main-content article section .details-container, body footer, .book-template {
   display: -webkit-flex;
   display: flex; }
 
@@ -72,11 +72,11 @@ body, body main, body main .main-content .people-container ul .personCard {
   -webkit-flex-flow: column nowrap;
   flex-flow: column nowrap; }
 
-body main .main-content article header, body main .main-content article section, body main .main-content article section .details-container .details-header, body main .main-content .people-container {
+body main .main-content article header, body main .main-content article section, body main .main-content article section .details-container .details-header, body main .main-content .people-container, .book-template > header {
   -webkit-flex-direction: row;
   flex-direction: row; }
 
-body main .main-content article, body main .main-content article section .details-container, body footer {
+body main .main-content article, body main .main-content article section .details-container, body footer, .book-template {
   -webkit-flex-direction: column;
   flex-direction: column; }
 
@@ -363,9 +363,12 @@ html {
 html, body {
   height: 100vh;
   width: 100vw;
+  max-height: 100vh;
+  max-width: 100vw;
   margin: 0;
   padding: 0;
-  -webkit-text-size-adjust: 100%; }
+  -webkit-text-size-adjust: 100%;
+  overflow: hidden; }
 
 body {
   -moz-box-sizing: border-box;
@@ -591,6 +594,14 @@ body {
   body footer {
     -webkit-flex: 1;
     flex: 1; }
+  body > footer {
+    flex: 0.5; }
+    body > footer > a:last-of-type, body > footer small {
+      display: inline-block; }
+    body > footer .site-nav-button {
+      position: absolute;
+      bottom: 0.25rem;
+      left: 0.25rem; }
 
 ol {
   counter-reset: li;
@@ -628,9 +639,10 @@ ol {
         content: counter(li);
         counter-increment: li;
         position: absolute;
-        left: -0.75rem;
+        left: -0.25rem;
         top: 50%;
         margin-top: -1.3em;
+        margin-left: 0.25rem;
         background: #00A5D8;
         height: 2em;
         width: 2em;
@@ -668,3 +680,58 @@ button {
 
 .birthDate {
   width: 100%; }
+
+.book-template {
+  align-items: stretch;
+  justify-content: center; }
+  .book-template > header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    padding: 0 0.5rem 0.5rem;
+    align-items: flex-end;
+    justify-content: space-between;
+    background-color: rgba(250, 250, 250, 0.75); }
+    .book-template > header .book-search input[type="search"] {
+      outline: none; }
+    .book-template > header .book-title {
+      text-transform: capitalize;
+      flex: 5;
+      transition: all 0.5s ease; }
+  .book-template .book-chapter {
+    transition: all 0.75s ease;
+    height: 85vh;
+    max-height: 85vh;
+    overflow: scroll;
+    font-size: 2rem;
+    width: 98vw;
+    margin: 10rem auto 0;
+    counter-reset: p;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box; }
+    .book-template .book-chapter > p {
+      position: relative;
+      -moz-box-sizing: border-box;
+      -webkit-box-sizing: border-box;
+      box-sizing: border-box;
+      padding-left: 1rem; }
+      .book-template .book-chapter > p:before {
+        position: absolute;
+        content: counter(p);
+        counter-increment: p;
+        left: -0.25rem;
+        height: 2.5rem;
+        font-weight: bold;
+        font-size: 1rem;
+        margin-left: 0.25rem; }
+
+select {
+  outline: none; }
+
+a {
+  color: inherit; }
