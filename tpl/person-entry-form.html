@@ -1,0 +1,221 @@
+<form id="person-entry-form">
+	<fieldset class="sex-info">
+		<legend>Sex</legend>
+			<ul>
+				<li>
+					<label for="sex">Sex</label>
+					<select name="sex">
+						<option value="">Choose One</option>
+						<option value="male">Male</option>
+						<option value="female">Female</option>
+					</select>
+				</li>
+			</ul>
+		</legend>
+	</fieldset>
+	<fieldset class="name-info">
+		<legend>Name Info</legend>
+		<ul>
+			<li class="salutation-name">
+				<label for="salutation">Salutation</label>
+				<input type="text" name="salutation" value="" placeholder="Dr., Mrs., Mr.">
+			</li>
+			<li class="first-name">
+				<label for="firstname">First</label>
+				<input type="text" name="firstname" value="" placeholder="John">
+			</li>
+			<li class="middle-name">
+				<label for="middlename">Middle</label>
+				<input type="text" name="middlename" value="" placeholder="Jacob">
+			</li>
+			<li class="last-name">
+				<ul>
+					<li>
+						<label for="given">Given</label>
+						<input type="text" name="given">
+					</li>
+					<li>
+						<label for="adopted">Adopted</label>
+						<input type="text" name="adopted">
+					</li>
+					<li>
+						<label for="married">Married</label>
+						<input type="text" name="married">
+					</li>
+					<li>
+						<label for="maiden">Maiden</label>
+						<input type="text" name="maiden">
+					</li>
+				</ul>
+			</li>
+			<li class="suffix-name">
+				<label for="suffixname">Suffix</label>
+				<input type="text" name="suffixname" value="" placeholder="Jr., Sr., III">
+			</li>
+			<li class="title-name">
+				<label for="titlename">Title</label>
+				<input type="text" name="titlename" value="" placeholder="Ph.D., Esq., M.D.">
+			</li>
+			<li class="nick-name">
+				<label for="nickname">Nickname</label>
+				<input type="text" name="nickname" value="" placeholder="Jingleheimer">
+			</li>
+			<li class="preferred-name">
+				<label for="preferredname">Preferred Name</label>
+				<input type="text" name="preferredname" value="" placeholder="Jake">
+			</li>
+		</ul>
+	</fieldset>
+	<fieldset class="attributes-info">
+		<legend>Attributes</legend>
+		<ul>
+			<li>
+				<label for="eyecolor">Eye Color</label>
+				<select name="eyecolor">
+					<option value="">Choose One</option>
+					<option value="amber">Amber</option>
+					<option value="blue">Blue</option>
+					<option value="brown">Brown</option>
+					<option value="grey">Grey</option>
+					<option value="green">Green</option>
+					<option value="hazel">Hazel</option>
+					<option value="unknown">Unknown</option>
+				</select>
+			</li>
+			<li>
+				<label for="handedness">Handedness</label>
+				<select name="handedness">
+					<option value="">Choose One</option>
+					<option value="right">Right</option>
+					<option value="left">Left</option>
+					<option value="ambidexterous">Ambidexterous</option>
+					<option value="unknown">Unknown</option>
+				</select>
+			</li>
+		</ul>
+	</fieldset>
+	<fieldset class="relationships-info">
+		<legend>Relationship Information</legend>
+		<fieldset class="parent-information">
+			<legend>Parents</legend>
+			<ul>
+				<li>
+					<label for="father">Father</label>
+					<input type="text" name="father" placeholder="Juan Carlo Whatever">
+				</li>
+				<li>
+					<label for="mother">Mother</label>
+					<input type="mother" name="mother" placeholder="Isabelle Whatever">
+				</li>
+			</ul>
+		</fieldset>
+		<fieldset class="sibling-information">
+			<legend>Siblings</legend>
+			<ul class="sibling-list">
+				<li>
+					<label for="sibling">Sibling</label>
+					<select name="sibling">
+						<option value="">Choose One</option>
+						<option value="brother">Brother</option>
+						<option value="sister">Sister</option>
+					</select>
+				</li>
+				<li>
+					<label for="sibling-name">Sibling Name</label>
+					<input type="text" name="sibling-name" placeholder="Jackson Black">
+				</li>
+				<li>
+					<button data-target="Phorm" data-method="add-sibling" data-item="brother">Add Brother</button>
+					<button data-target="Phorm" data-method="add-sibling" data-item="sister">Add Sister</button>
+				</li>
+			</ul>
+		</fieldset>
+		<fieldset class="spouse-information">
+			<legend>Spouse</legend>
+			<ul>
+				<li>
+					<label for="spousename">Name</label>
+					<input type="text" name="spousename" placeholder="Rhonda Jones">
+				</li>
+			</ul>
+		</fieldset>
+		<fieldset class="children-information">
+			<legend>Child/Children</legend>
+			<ul class="child-list">
+				<li>
+					<label for="child">Child</label>
+					<select name="child">
+						<option value="">Choose One</option>
+						<option value="son">Son</option>
+						<option value="daughter">Daughter</option>
+					</select>
+				</li>
+				<li>
+					<label for="child-name">Child Name</label>
+					<input type="text" name="child-name" placeholder="Hortence FathersLastName">
+				</li>
+				<li>
+					<button data-target="Phorm" data-method="add-child" data-item="son">Add Son</button>
+					<button data-target="Phorm" data-method="add-child" data-item="daughter">Add Daughter</button>
+				</li>
+			</ul>
+		</fieldset>
+	</fieldset>
+	<fieldset class="dates-info">
+		<legend>Date Information</legend>
+		<ul>
+			<li>
+				<ul>
+					<li>
+						<label for="birthdate">Birth</label>
+						<input type="date" name="birthdate">
+					</li>
+					<li>
+						<label for="birthlocation">Location</label>
+						<input type="text" name="birthlocation" placeholder="New Orleans, LA">
+					</li>
+					<li>
+						<label for="ageOfFatherAtTimeOfBirth">Age of father at time of birth</label>
+						<input type="number" name="ageOfFatherAtTimeOfBirth" value="" placeholder="35">
+					</li>
+					<li>
+						<label for="ageOfMotherAtTimeOfBirth">Age of Mother at time of birth</label>
+						<input type="number" name="ageOfMotherAtTimeOfBirth" value="" placeholder="34">
+					</li>
+				</ul>
+			</li>
+			<li>
+				<ul>
+					<li>
+						<label for="marrieddate">Married</label>
+						<input type="date" name="marrieddate">
+					</li>
+				</ul>
+			</li>
+			<li>
+				<ul>
+					<li>
+						<label for="deathdate">Death</label>
+						<input type="date" name="deathdate">
+					</li>
+					<li>
+						<label for="deathlocation">Location</label>
+						<input type="text" name="deathlocation" placeholder="Roanoake, VA">
+					</li>
+					<li>
+						<label for="deathcause">Cause</label>
+						<input type="text" name="deathcause" placeholder="Natural, Cancer, etc.">
+					</li>
+				</ul>
+			</li>
+		</ul>
+	</fieldset>
+	<fieldset>
+		<ul>
+			<li class="buttonContainer">
+				<button data-target="Phorm" data-method="cancel" data-item="person-entry-form">Cancel</button>
+				<button data-target="Phorm" data-method="submit" data-item="person-entry-form">Submit</button>
+			</li>
+		</ul>
+	</fieldset>
+</form>

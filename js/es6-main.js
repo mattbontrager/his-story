@@ -306,7 +306,7 @@ const App = (() => {
 	}
 
 	const changeViews = (person) => {
-		!!development && console.log('in changeViews');
+		!!development && console.log('in changeViews: ', person);
 	};
 
 	const viewPerson = (pid) => {
@@ -488,7 +488,6 @@ const App = (() => {
 		let classToAssign = 'personCard ' + theImage;
 		let thebday = (person.birth && person.birth.date) ? moment(person.birth.date): null;
 		let bday = (thebday) ? thebday.format("MMM Do, YYYY"): null;
-		!!development && console.warn('bday: ', bday);
 		let age = (bday) ? thebday.fromNow(true): null;
 		let thelastName = person.name.lastname;
 		let data = {
@@ -600,7 +599,9 @@ const App = (() => {
 			checkIfAllBooksAreDownloaded: () => {
 				return new Promise((resolve, reject) => {
 					const allBooksLocal = JSON.parse(localStorage.getItem('his-story-titles-of-stored-books'));
-					if (allBooksLocal.length === 0) {
+					if (!allBooksLocal) {
+						resolve();
+					} else if (allBooksLocal && allBooksLocal.length === 0) {
 						resolve();
 					} else if (allBooksLocal.length < 65) {
 						resolve();
@@ -755,6 +756,9 @@ const App = (() => {
 						optionI++;
 						options.push(self.BookView.optionFactory(optionI));
 					}
+					/**
+					 * FIXME: his-story-titles-of-stored-books is not populating properly or in the order it should
+					 **/
 					$('.book-chapter').empty().append(verseArr.join(''));
 					$('#jump-to-chapter').empty().append(options.join(''));
 					self.BookView.bookBindings();
@@ -827,6 +831,11 @@ const App = (() => {
 
 				if (item === 'books-container') {
 					self.BookView.init(item);
+				} else if (item === 'person-detail-container') {
+					$item.loadTemplate('tpl/person-entry-form.html', {}, {success: formBindings});
+					$item.show();
+					$('.site-nav-button').hide();
+					$('.app-nav').show();
 				} else {
 					$item.show();
 					$('.site-nav-button').hide();

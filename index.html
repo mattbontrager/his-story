@@ -14,6 +14,7 @@
 		<nav class="app-nav">
 			<button data-target="View" data-method="show" data-item="books-container">Books</button>
 			<button data-target="View" data-method="show" data-item="people-container">People</button>
+			<button data-target="View" data-method="show" data-item="person-detail-container">Add Person</button>
 		</nav>
 		<main>
 			<div id="books-container"></div>
@@ -37,6 +38,32 @@
 						</section>
 					</div>
 				</div>
+			</div>
+			<div id="person-detail-container">
+				<article id="person-detail">
+					<header>
+						<h1 class="person-detail person-name">First Middle Last<small class="person-detail person-age">33</small></h1>
+					</header>
+					<section class="person-detail date-section">
+						<div class="birth-date-information">
+							<p class="birth-date"></p>
+						</div>
+						<div class="death-date-information">
+							<p class="death-date"></p>
+						</div>
+					</section>
+					<section class="pereson-detail attributes-information">
+						<p>Height: <span class="height-information"></span></p>
+						<p>Weight: <span class="weight-information"></span></p>
+						<p>Handedness: <span class="handedness-information"></span></p>
+					</section>
+					<section class="person-detail notable-events">
+						<p>this is the notable events section</p>
+					</section>
+					<footer>
+						<p>this is the person detail footer</p>
+					</footer>
+				</article>
 			</div>
 		</main>
 		<footer>
@@ -190,11 +217,11 @@
 			</li>
 		</template>
 
-		<script src="js/uuid.js"></script>
-		<script src="js/hexify.js"></script>
-		<script src="js/modernizr-custom.js"></script>
-		<script src="js/moment.js"></script>
-		<script src="js/jquery.js"></script>
+		<script src="js/lib/uuid.js"></script>
+		<script src="js/lib/hexify.js"></script>
+		<script src="js/lib/modernizr-custom.js"></script>
+		<script src="js/lib/moment.js"></script>
+		<script src="js/lib/jquery.js"></script>
 		<script src="js/lib/loadTemplate.js"></script>
 		<script src="js/es6-main.js"></script>
 	</body>

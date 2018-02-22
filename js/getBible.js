@@ -21,15 +21,16 @@
 	};
 
 	const sendError = (err) => {
-		postMessage({"error": err});
+		postMessage({"error": JSON.stringify(err)});
 	};
 
 	const startDownloads = () => {
 		postMessage({"msg": "Starting downloads now..."});
 
 		for (let name of booknames) {
-			postMessage({"msg": `skipping ${name}, cus Im a good boy.`});
-			continue;
+			getBook(name).then(sendBook, sendError);
+			// postMessage({"msg": `skipping ${name}, cus Im a good boy.`});
+			// continue;
 			// if (name === 'exodus') {
 			// 	postMessage({"msg": `skipping ${name}, cus Im a good boy.`});
 			// 	continue;
@@ -39,7 +40,6 @@
 			// } else if (name === 'genesis') {
 
 			// } else {
-			// 	getBook(name).then(sendBook, sendError);
 			// }
 		}
 	};
